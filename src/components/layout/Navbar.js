@@ -1,24 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BlueButton from "../common/BlueButton";
+import Profile from "./Profile";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
 const Navbar = () => {
     return (
-        <nav className="flex h-30 items-center justify-between">
-            <div id="logo" className="flex text-slate-600 text-2xl m-3 items-center border-b w-52">
-                <img src="/traderLogo.svg" alt="logo" className="h-14 w-12" />
-                <p>Trader Log</p>
-            </div>
-            <div id="nav-links" className="w-72 flex justify-between items-center ">
-                <button className="bg-traderBlue text-white h-10 w-28 flex items-center justify-center rounded-xl hover:bg-blue-400 cursor-pointer">
-                    <Link to="/home">home</Link>
-                </button>
-                <button className="bg-traderBlue text-white h-10 w-28 flex items-center justify-center rounded-xl hover:bg-blue-400  ">
-                    <Link to="/import">Import</Link>
-                </button>
-                profile
+        <nav className="flex h-68px items-center justify-between w-screen border-b">
+           <div className="flex items-center ml-3">
+                <MdOutlineArrowBackIosNew className="text-3xl text-slate-600" />
+           </div>
+            <div id="nav-links" className="flex justify-between items-center w-500px ">
+                <div id='buttons-container' className="flex justify-between w-64">
+                    <BlueButton text="Home" link="/home" />
+                    <BlueButton text="Import" link="/Import" />
+                </div>
+                <Profile/>
             </div>
         </nav>
     )
 };
 
 export default Navbar;
+#7B8289

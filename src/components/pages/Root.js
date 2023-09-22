@@ -5,14 +5,12 @@ import { Outlet } from "react-router-dom";
 
 const Root = () => {
     return (
-        <section>
+        <section className="flex">
+            <Sidebar />
             <Navbar />
-            <div>
-                {/* <Sidebar /> */}
                 <div>
                     <Outlet />
                 </div>
-            </div>
         </section>
     );
 };
