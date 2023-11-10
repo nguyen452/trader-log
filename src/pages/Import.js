@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DropZone from "../features/DropZone";
 
 
 const Import = () => {
@@ -9,7 +10,7 @@ const Import = () => {
         setBroker(e.target.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleUpload = async (e) => {
         e.preventDefault();
 
         const file = e.target.fileUpload.files[0];
@@ -31,7 +32,7 @@ const Import = () => {
     };
 
     return (
-        <main className="h-full w-full p-8 flex text-slate-800 container mx-auto gap-8">
+        <main className="h-full w-full p-8 flex flex-col md:flex-row text-slate-800 container mx-auto gap-8">
             <section className=" bg-white rounded-3xl shadow-md">
                 <h2 className="text-3xl p-8">Please select your broker</h2>
                 <select
@@ -54,7 +55,7 @@ const Import = () => {
                     <option value="Webull">Webull</option>
                 </select>
 
-                <article className="flex flex-col p-8 w-96">
+                <article className="flex flex-col p-8 lg:w-96">
                     <h1 className="text-lg font-semibold my-8">
                         TradeZero Trade History CSV Download
                     </h1>
@@ -92,43 +93,10 @@ const Import = () => {
                 <h2 className="font-normal text-3xl p-8">
                     Drag and Drop your file
                 </h2>
-                <div className="flex justify-center w-full">
-                    <div className="border-dashed border-4 w-96">
-                        <img
-                            src="/folderUploadPic.png"
-                            alt="cloudUploadIcon"
-                            className="w-96 mx-auto"
-                        ></img>
-                    </div>
-                </div>
-                <h2 className="text-3xl p-8">
-                    Select your file
-                </h2>
-                <input type='file' accept='.csv' name='fileUpload'></input>
-                <button type="submit">Upload</button>
+                <DropZone handleUpload={handleUpload} />
             </section>
         </main>
     );
 };
 
 export default Import;
-{
-    /* <section>
-<form onSubmit={handleSubmit} className="flex flex-col">
-    <label htmlFor='broker-select'>Choose your broker</label>
-    <select value={broker} onChange={handleChange} id='broker-select' >
-        <option value='' disabled>Please choose your broker</option>
-        <option value='Charles Schwab'>Charles Schwab</option>
-        <option value='Interactive Broker'>Interactive Broker</option>
-        <option value='Fidelity'>Fidelity</option>
-        <option value='TD Ameritrade'>TD Ameritrade</option>
-        <option value= 'Trade Zero'>Trade Zero</option>
-        <option value= 'Robinhood'>Robinhood</option>
-        <option value= 'Webull'>Webull</option>
-    </select>
-    <input type='file' accept='.csv' name='fileUpload'></input>
-    <button type="submit">Upload</button>
-</form>
-<p>{broker}</p>
-</section> */
-}

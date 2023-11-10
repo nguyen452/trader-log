@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 const Sidebar = () => {
   const { userId } = useParams();
   return (
-    <div className="flex flex-col w-52 h-screen border-r border-slate-300" >
+    <div className="flex flex-col w-52 h-full shadow-right" >
       <div id="logo" className="flex text-slate-600 text-2xl m-3 items-center w-48">
         <img src="/traderLogo.svg" alt="logo" className="h-20 w-16" />
         <p className="text-xl font-semibold">Trader Log</p>

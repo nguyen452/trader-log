@@ -5,15 +5,15 @@ import { Outlet } from "react-router-dom";
 
 const SignedIn = () => {
     return (
-        <div className="flex w-full">
-            <aside>
+        <div className="flex w-full h-full">
+            <aside className="h-full">
                 <Sidebar />
             </aside>
-            <div className="w-full">
+            <div className="w-full h-screen flex flex-col">
                 <header>
                     <SignedInNavBar />
                 </header>
-                <main className="h-full bg-slate-50">
+                <main className=" h-full bg-slate-50">
                     <Outlet />
                 </main>
             </div>

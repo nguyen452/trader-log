@@ -21,6 +21,9 @@ module.exports = {
         '70px': '70px',
         '768px': '768px'
       },
+      boxShadow: {
+        "right": "10px 0px 10px -12px rgba(0, 0, 0, 0.25)",
+      }
     },
   },
   plugins: [],
