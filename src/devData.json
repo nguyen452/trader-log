@@ -1,0 +1,34 @@
+{
+    "data": [
+      {
+        "tickerName": "AAPL",
+        "profitMade": 5000.00,
+        "dateOfSetup": "2023-09-20",
+        "setupName": "Breakout"
+      },
+      {
+        "tickerName": "MSFT",
+        "profitMade": 2500.50,
+        "dateOfSetup": "2023-09-18",
+        "setupName": "Double Bottom"
+      },
+      {
+        "tickerName": "GOOGL",
+        "profitMade": -1000.75,
+        "dateOfSetup": "2023-09-15",
+        "setupName": "Head and Shoulders"
+      },
+      {
+        "tickerName": "AMZN",
+        "profitMade": 1500.25,
+        "dateOfSetup": "2023-09-12",
+        "setupName": "Flag Pattern"
+      },
+      {
+        "tickerName": "TSLA",
+        "profitMade": 3000.00,
+        "dateOfSetup": "2023-09-10",
+        "setupName": "Pullback"
+      }
+    ]
+  }

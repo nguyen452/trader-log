@@ -7,9 +7,11 @@ module.exports = {
     extend: {
       colors: {
         'traderBlue': '#2f70f2',
-        'backgroudGrey': '#F5F6FA',
-        'softRed': '#EF627A',
+        'lightBlue': '#1083EF',
+        'backgroundGrey': '#F5F6FA',
+        'softRed': '#F17471',
         'softGreen': '#00C49F',
+        'softCoral': '#FF6B6B'
       },
       width: {
         '500px': '500px',
