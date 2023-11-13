@@ -2,11 +2,48 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import clsx from "clsx";
 import BlueButton from "../components/common/BlueButton";
-const DropZone = ({ handleUpload }) => {
+const DropZone = () => {
     const [files, setFiles] =useState([]);
     const [fileExits, setFileExits] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [success, setSuccess] = useState(false)
+
+    const handleUpload = async () => {
+        setIsLoading(true);
+        const formData = new FormData();
+        files.forEach((file) => formData.append("fileUploads", file));
+        console.log({formData})
+        try {
+            // send file to backend
+            const upload = await fetch("http://localhost:4000/api/trades/import", {
+                method: "POST",
+                credentials: 'include',
+                body: formData,
+            });
+
+            const response = await upload.json();
+            if (response.status === "success") {
+                setHasError(false);
+                setSuccess(true);
+                setIsLoading(false);
+
+                console.log("file uploaded successfully");
+            } else {
+                console.log("file upload failed");
+                setHasError(true);
+                setSuccess(false)
+            }
+        } catch (error) {
+            setHasError(true);
+            setIsLoading(false);
+            setSuccess(false);
+            console.log("file upload failed with error: ", error);
+        }
+    };
 
     const onDrop = useCallback((acceptedFiles) => {
         // check if file is unique using find method if it finds something it will return the file object then we need to set it to false if it finds something and true if it doesn't find something
@@ -27,7 +64,6 @@ const DropZone = ({ handleUpload }) => {
         }
 
     }, [files]);
-    console.log(files)
 
     const removeFile = (key) => {
         const updatedFiles = files.filter((file, index) => index !== key)
@@ -81,9 +117,13 @@ const DropZone = ({ handleUpload }) => {
                         );
                     })}
                 </div>
-                <div className="w-2/3 flex justify-center mx-8">
-                <BlueButton text="Upload" onClick={handleUpload} />
+                <div className="w-2/3 flex justify-center mx-8" >
+                <BlueButton text="Upload" onClick={handleUpload} isLoading={isLoading} />
                 </div>
+                {/* success state */}
+                {success && <p className="flex items-center text-green-500 px-8 py-2 gap-1" ><DoneAllIcon /> Successfully uploaded</p>}
+                {/* error state */}
+                {hasError && <p className="flex items-center text-red-500 px-8 py-2 gap-1"><PriorityHighRoundedIcon /> There was an error with uploading</p>}
 
             </div>
         </div>

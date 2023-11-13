@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 // import TopTrades from "../../features/topTrades/TopTrades";
 // import Profits from "../layout/profits/Profits";
 import DashboardGrid from "../layout/DashboardGrid";
@@ -46,28 +46,28 @@ const tradeData = [
     },
 ];
 const DashBoard = () => {
+
+    useEffect(() => {
+        const pullTradeData = async() => {
+            console.log('called')
+            const response = await fetch('http://localhost:4000/api/trades/tradeMetrics', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            console.log(response)
+            const data =  await response.json();
+            console.log(data)
+        }
+        pullTradeData()
+    }, []);
     return (
         <main className="flex w-full">
             <div className="w-full">
-                {/* <div className=" flex items-center h-16 p-4">
-                    <DatePicker sx={
-                        {
-                            '& input': {
-                                font: "poppins",
-                                fontSize: "12px",
-                                width: "200px",
-                                height: "12px",
-                                borderRadius: "5px",
-                                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.05)",
-                            }
-                        }
-                    } />
-                </div> */}
                 <DashboardGrid
                     children={{
                         card1: (
                             <Cards
-                                title="Accumulated Return $"
+                                title="Total Return"
                                 content={"$15,000"}
                                 chart={<ProfitMiniAreaChart />}
                             />

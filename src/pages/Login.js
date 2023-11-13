@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import Navbar from "../layout/Navbar";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectIsAuthenticated } from "../slice/authSlice";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
-    const [loading, setLoadingState] = useState(false);
+    const [isLoading, setIsLoadingState] = useState(false);
     const [loginErrorState, setLoginErrorState] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const isAuthenticated = useSelector(selectIsAuthenticated);
-    console.log(isAuthenticated);
-
     const handleSubmit = async (e) => {
         //prevent default
         e.preventDefault();
+        setIsLoadingState(true);
         //post to server
-        await dispatch(login({ username, password }));
-        if (isAuthenticated) {
-            navigate("/dashboard");
+        const response = await dispatch(login({ username, password }));
+        if (response.payload) {
+            setIsLoadingState(false);
+            navigate(`/user/${response.payload}/dashboard`);
+
         } else {
             setLoginErrorState(true);
+            setIsLoadingState(false);
         }
     };
 
@@ -117,7 +118,7 @@ const Login = () => {
                                 type="submit"
                                 className="bg-traderBlue text-white h-12 w-full flex items-center justify-center rounded-md hover:bg-blue-400 cursor-pointer mt-2"
                             >
-                                Sign in
+                                {isLoading ? <LoadingSpinner /> : "Login"}
                             </button>
                             <div>
                                 {loginErrorState ? (

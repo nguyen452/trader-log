@@ -10,26 +10,6 @@ const Import = () => {
         setBroker(e.target.value);
     };
 
-    const handleUpload = async (e) => {
-        e.preventDefault();
-
-        const file = e.target.fileUpload.files[0];
-        const formData = new FormData();
-        formData.append("fileUpload", file);
-
-        // send file to backend
-        const upload = await fetch("http://localhost:4000/api/trades/import", {
-            method: "POST",
-            body: formData,
-        });
-
-        const response = await upload.json();
-        if (response.status === "success") {
-            console.log("file uploaded successfully");
-        } else {
-            console.log("file upload failed");
-        }
-    };
 
     return (
         <main className="h-full w-full p-8 flex flex-col md:flex-row text-slate-800 container mx-auto gap-8">
@@ -93,7 +73,7 @@ const Import = () => {
                 <h2 className="font-normal text-3xl p-8">
                     Drag and Drop your file
                 </h2>
-                <DropZone handleUpload={handleUpload} />
+                <DropZone />
             </section>
         </main>
     );

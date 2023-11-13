@@ -21,7 +21,7 @@ const chartStyle = {
 const ProfitMiniAreaChart = () => {
     return (
 
-            <ResponsiveContainer width={200} height={96}>
+            <ResponsiveContainer width={192} height={96}>
                 <AreaChart
                     data={data}
                     margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

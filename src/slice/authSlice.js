@@ -7,6 +7,7 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
             username: username,
             password: password
@@ -14,8 +15,9 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     });
     const data = await response.json();
     // what every is receive back from the backend
+    console.log(data)
     if (data.message === 'User is authenticated.') {
-        return data.message;
+        return data.userId;
     } else {
         throw new Error(data.message);
     }
@@ -57,6 +59,7 @@ const authSlice = createSlice({
 });
 
 export const selectIsAuthenticated = (state) => state.authenticate.isAuthenticated;
+export const selectUserId = (state) => state.authenticate.userId;
 
 export const { logout } = authSlice.actions;
 
