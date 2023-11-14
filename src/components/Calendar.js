@@ -21,13 +21,11 @@ function Calendar() {
   //helper function to get the days to fully populate the calendar
   const getDaystoPopulateCalendar = (year, month) => {
     const dayOfWeekOfTheFirst = new Date(year, month, 1).getDay(); // return a value of 0-6 representing the day of the week of the first day of the month
-    console.log(dayOfWeekOfTheFirst);
     let startDayCount = new Date(
       year,
       month,
       1 - dayOfWeekOfTheFirst
     ).getDate(); // get the date of the first day of the calendar
-    console.log(startDayCount);
     if (dayOfWeekOfTheFirst !== 0) {
       month--;
     }

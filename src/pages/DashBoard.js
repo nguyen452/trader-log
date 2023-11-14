@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 // import TopTrades from "../../features/topTrades/TopTrades";
 // import Profits from "../layout/profits/Profits";
 import DashboardGrid from "../layout/DashboardGrid";
@@ -10,6 +10,7 @@ import ProfitFactorMiniBarChart from "../components/ProfitFactorMiniBarChart";
 import WinRatePieChart from "../components/WinRatePieChart";
 import BarChartRecentPerformance from "../components/BarChartRecentPerformance";
 import Table from "../components/Table";
+import AverageWinVsLossBarChart from "../components/AverageWinVsLossBarChart";
 const tradeData = [
     {
         ID: 1,
@@ -46,44 +47,52 @@ const tradeData = [
     },
 ];
 const DashBoard = () => {
+    const [tradesPerformance, setTradesPerformance] = useState({});
 
     useEffect(() => {
         const pullTradeData = async() => {
-            console.log('called')
             const response = await fetch('http://localhost:4000/api/trades/tradeMetrics', {
                 method: 'GET',
                 credentials: 'include'
             })
-            console.log(response)
             const data =  await response.json();
-            console.log(data)
+            setTradesPerformance(data.tradingPerformanceMetrics)
         }
         pullTradeData()
     }, []);
+
+    console.log(tradesPerformance)
     return (
         <main className="flex w-full">
             <div className="w-full">
                 <DashboardGrid
-                    children={{
+                    gridItems={{
                         card1: (
                             <Cards
-                                title="Total Return"
-                                content={"$15,000"}
-                                chart={<ProfitMiniAreaChart />}
+                                title='Total Return'
+                                content={tradesPerformance.totalReturn}
+                                chart={<ProfitMiniAreaChart data={data} />}
                             />
                         ),
                         card2: (
                             <Cards
                                 title="Profit Factor"
-                                content={"2.3"}
-                                chart={<ProfitFactorMiniBarChart />}
+                                content={tradesPerformance.profitFactor}
+                                chart={<ProfitFactorMiniBarChart data={data} />}
                             />
                         ),
                         card3: (
                             <Cards
                                 title="Win Rate"
-                                content={"62.25%"}
-                                chart={<WinRatePieChart />}
+                                content={`${tradesPerformance.winningPercentage} %`}
+                                chart={< WinRatePieChart data={data} />}
+                            />
+                        ),
+                        card4: (
+                            <Cards
+                                title="Average Win vs Loss"
+                                content={`Total Trades: ${tradesPerformance.totalTradeQuantity}`}
+                                chart={<AverageWinVsLossBarChart data={data} />}
                             />
                         ),
                         recentTradesWidget: <RecentTradesWidget />,
