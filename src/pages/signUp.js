@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../layout/Navbar";
+import React, { useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../slice/signUpSlice";
-import Footer from "../layout/Footer";
+
 import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const SignUp = () => {
@@ -32,6 +32,8 @@ const SignUp = () => {
         }
 
         const response = await dispatch(signUp(user))
+
+        console.log(response)
 
         if (!response.error) {
             navigate("/login")
@@ -81,7 +83,7 @@ const SignUp = () => {
                                 </div>
                             </div>
                             <div className="w-full">
-                                <label htmlFor="lastName">First Name</label>
+                                <label htmlFor="lastName">Last Name</label>
                                 <div className="flex bg-white items-center h-12 mt-1 md:mt-2">
                                     <input
                                         type="text"

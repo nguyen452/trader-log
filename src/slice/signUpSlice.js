@@ -15,8 +15,8 @@ export const signUp = createAsyncThunk('signUp/createUser', async({firstName, la
         })
     });
     const data = await response.json();
-    if (data.message === "User successfully created") {
-        return data.message;
+    if (response.ok) {
+        return data;
     } else {
         throw new Error(data.message)
     }
