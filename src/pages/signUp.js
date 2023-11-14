@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../slice/signUpSlice";
@@ -12,7 +12,7 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("")
-    const [error, setError] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const SignUp = () => {
         if (!response.error) {
             navigate("/login")
         } else {
-            setError(true)
+            setHasError(true)
         }
         // take the response
         // take user to log in page to authenticate
@@ -156,7 +156,7 @@ const SignUp = () => {
                             >
                                 {isLoading ? <div className="flex items-center space-x-4"><LoadingSpinner /><p className="text-lg">Loading ...</p></div> : "Sign up"}
                             </button>
-                            {error && <p>There was an error with creating your account</p>}
+                            {hasError && <p className="flex items-center text-red-500 px-8 py-2 gap-1"><PriorityHighRoundedIcon /> There was an error with uploading</p>}
                         </form>
                         <div className="flex space-x-2 mt-4">
                             <p> Already a user?</p>
