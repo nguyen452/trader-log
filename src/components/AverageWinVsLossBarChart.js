@@ -17,12 +17,12 @@ const chartStyle = {
 
 const AverageWinVsLossBarChart = ({ data }) => {
     return (
-            <ResponsiveContainer width={192} height={96}>
+            <ResponsiveContainer width={150} height={150}>
                 <BarChart data={data}>
                     <XAxis dataKey="name" tick={{ ...chartStyle }} tickMargin={12} stroke=" #cbd5e1" />
                     <YAxis />
-                    <Bar dataKey="AverageWin" fill="#1083EF" />
-                    <Bar dataKey="AverageLoss" fill="#F17471" />
+                    <Bar dataKey="averageWin" fill="#1083EF" />
+                    <Bar dataKey="averageLoss" fill="#F17471" />
                     <Tooltip />
                 </BarChart>
             </ResponsiveContainer>

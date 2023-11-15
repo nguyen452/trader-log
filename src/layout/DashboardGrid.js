@@ -9,7 +9,7 @@ const DashboardGrid = ({ gridItems }) => {
                     <div className=" w-full md:col-span-6 xl:col-span-3 ">{gridItems.card1}</div>
                     <div className="w-full md:col-span-6 xl:col-span-3 ">{gridItems.card2}</div>
                     <div className="w-full  md:col-span-6 xl:col-span-3">{gridItems.card3}</div>
-                    <div className="w-full  md:col-span-6 xl:col-span-3">{gridItems.card3}</div>
+                    <div className="w-full  md:col-span-6 xl:col-span-3">{gridItems.card4}</div>
                     <div className="md:col-span-8">{gridItems.equityCurve}</div>
                     <div className="w-full md:col-span-4">
                         {gridItems.recentTrade}

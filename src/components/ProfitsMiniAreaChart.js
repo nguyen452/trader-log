@@ -18,7 +18,8 @@ const chartStyle = {
     padding: "8px",
 };
 
-const ProfitMiniAreaChart = () => {
+const ProfitMiniAreaChart = ({ data }) => {
+    console.log(data)
     return (
 
             <ResponsiveContainer width={192} height={96}>

@@ -16,7 +16,7 @@ const chartStyle = {
     padding: "8px",
 };
 
-const Profits = () => {
+const Profits = ({ data }) => {
     return (
         <section className="flex flex-col bg-white font-light text-slate-900 rounded-3xl shadow-md p-4">
             <div id="title-date-container" className="my-6 ml-6">
@@ -50,17 +50,6 @@ const Profits = () => {
         </section>
     );
 };
-export const data = [
-    { date: "2023-11-01", "accumulated profits": 100 },
-    { date: "2023-11-02", "accumulated profits": 150 },
-    { date: "2023-11-03", "accumulated profits": 210 },
-    { date: "2023-11-04", "accumulated profits": 280 },
-    { date: "2023-11-05", "accumulated profits": 360 },
-    { date: "2023-11-06", "accumulated profits": 450 },
-    { date: "2023-11-07", "accumulated profits": 550 },
-    { date: "2023-11-08", "accumulated profits": 660 },
-    { date: "2023-11-09", "accumulated profits": 780 },
-    { date: "2023-11-10", "accumulated profits": 910 },
-  ];
+
 
 export default Profits;

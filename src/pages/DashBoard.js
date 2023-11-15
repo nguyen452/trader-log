@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import getLastNumbersOfDayProfit from "../utils/getLastNumbersOfDayProfit";
 // import TopTrades from "../../features/topTrades/TopTrades";
 // import Profits from "../layout/profits/Profits";
 import DashboardGrid from "../layout/DashboardGrid";
@@ -71,33 +72,33 @@ const DashBoard = () => {
                             <Cards
                                 title='Total Return'
                                 content={tradesPerformance.totalReturn}
-                                chart={<ProfitMiniAreaChart data={data} />}
+                                chart={<ProfitMiniAreaChart data={tradesPerformance.accumulatedProfitsPerDay} />}
                             />
                         ),
                         card2: (
                             <Cards
                                 title="Profit Factor"
                                 content={tradesPerformance.profitFactor}
-                                chart={<ProfitFactorMiniBarChart data={data} />}
+                                chart={<ProfitFactorMiniBarChart data={tradesPerformance.profitFactor} />}
                             />
                         ),
                         card3: (
                             <Cards
                                 title="Win Rate"
                                 content={`${tradesPerformance.winningPercentage} %`}
-                                chart={< WinRatePieChart data={data} />}
+                                chart={< WinRatePieChart data={tradesPerformance.winningPercentage} />}
                             />
                         ),
                         card4: (
                             <Cards
                                 title="Average Win vs Loss"
-                                content={`Total Trades: ${tradesPerformance.totalTradeQuantity}`}
-                                chart={<AverageWinVsLossBarChart data={data} />}
+                                content={`${tradesPerformance.averageReturn}`}
+                                chart={<AverageWinVsLossBarChart data={[{name: 'averages', averageWin: tradesPerformance.averageWin, averageLoss: tradesPerformance.averageLoss}]} />}
                             />
                         ),
                         recentTradesWidget: <RecentTradesWidget />,
-                        equityCurve: <Profits />,
-                        recentTrade: <BarChartRecentPerformance />,
+                        equityCurve: <Profits data={ tradesPerformance.accumulatedProfitsPerDay} />,
+                        recentTrade: <BarChartRecentPerformance data={getLastNumbersOfDayProfit(tradesPerformance.)}/>,
                         dataTable: (
                             <div className=" w-full flex flex-col bg-white rounded-3xl shadow-md overflow-x-auto">
                                 <h2 className="font-bold text-slate-800 text-xl p-8">
