@@ -19,7 +19,6 @@ const chartStyle = {
 };
 
 const ProfitMiniAreaChart = ({ data }) => {
-    console.log(data)
     return (
 
             <ResponsiveContainer width={192} height={96}>
@@ -37,7 +36,7 @@ const ProfitMiniAreaChart = ({ data }) => {
 
                     <Area
                         type="monotone"
-                        dataKey="accumulated profits"
+                        dataKey="Accumulated Profits"
                         stroke="url(#gradient)"
                         strokeWidth={2}
                         dot={false}

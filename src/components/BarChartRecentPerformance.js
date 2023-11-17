@@ -6,16 +6,10 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    ResponsiveContainer
+    ResponsiveContainer,
 } from "recharts";
 
-const data = [
-    { date: 'Nov 1', 'profits': 100 },
-    { date: 'Nov 5', 'profits': 200 },
-    { date: 'Nov 1', 'profits': -50 },
-    { date: 'Nov 1', 'profits': 150 },
-    { date: 'Nov 1', 'profits': -30 },
-]
+
 const chartStyle = {
     fontFamily: "Poppins",
     fontSize: "12px",
@@ -23,7 +17,7 @@ const chartStyle = {
     padding: "8px",
 };
 
-const BarChartRecentPerformance = () => {
+const BarChartRecentPerformance = ({ data }) => {
     // Function to determine bar color based on the "profits" value
     const getBarFill = (value) => {
         return value > 0 ? "#1083EF" : "#F17471";
@@ -35,20 +29,44 @@ const BarChartRecentPerformance = () => {
             </div>
             <ResponsiveContainer width="100%" height={384}>
                 <BarChart data={data}>
-                    <XAxis dataKey="date" tick={{ ...chartStyle }} tickMargin={12} stroke=" #cbd5e1" />
-                    <YAxis dataKey="profits" tick={{ ...chartStyle }} tickMargin={12} stroke=" #cbd5e1" />
+                <Tooltip
+                    contentStyle={{
+                        backgroundColor: "rgb(255 255 255 / 0.97)",
+                        border: "none",
+                        borderRadius: "8px",
+                        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+                        padding: "12px",
+                        fontFamily: "Poppins",
+                        fontSize: "12px",
+                        color: "#7B8289",
+                    }}
+                    cursor={{fill: 'rgb(241 245 249 / 0.97)'}}
+
+                />
+                    <XAxis
+                        dataKey="date"
+                        tick={{ ...chartStyle }}
+                        tickMargin={12}
+                        stroke=" #cbd5e1"
+                    />
+                    <YAxis
+                        dataKey="profits"
+                        tick={{ ...chartStyle }}
+                        tickMargin={12}
+                        stroke=" #cbd5e1"
+                    />
                     <Bar dataKey="profits">
-                        {
-                            data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={getBarFill(entry.profits)} />
-                            ))
-                        }
+                        {data.map((entry, index) => (
+                            <Cell
+                                key={`cell-${index}`}
+                                fill={getBarFill(entry.profits)}
+                            />
+                        ))}
                     </Bar>
-                    <Tooltip />
                 </BarChart>
             </ResponsiveContainer>
         </section>
-    )
+    );
 };
 
 export default BarChartRecentPerformance;

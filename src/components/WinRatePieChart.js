@@ -7,8 +7,8 @@ import {
     Cell,
 } from "recharts";
 
-const COLORS = ['#1083EF','#F17471',];
-const WinRatePieChart = () => {
+const COLORS = ['#1083EF','#F17471', 'FED766'];
+const WinRatePieChart = ({ data }) => {
     return (
         <ResponsiveContainer width={200} height={96}>
             <PieChart>
@@ -25,7 +25,17 @@ const WinRatePieChart = () => {
                         ))
                     }
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle = {{
+                    backgroundColor: "rgb(255 255 255 / 0.97)",
+                    border: "none",
+                    borderRadius: "8px",
+                    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+                    padding: "12px",
+                    fontFamily: "Poppins",
+                    fontSize: "12px",
+                    color: "#7B8289",
+                    }}
+                 />
             </PieChart>
         </ResponsiveContainer>
     )
