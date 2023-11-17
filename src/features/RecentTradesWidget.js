@@ -1,6 +1,7 @@
 import React from "react";
 import Calendar from "../components/Calendar";
-import TradesInSelectedDay from "../components/TradesInSelectedDay";
+import { useSelector } from "react-redux";
+import { selectSelectedDate } from "../slice/calendarSlice";
 import Table from "../components/Table";
 
 const testData = [
@@ -35,14 +36,16 @@ const testData = [
 ];
 
 const RecentTradesWidget = () => {
+    const selectedDate = useSelector(selectSelectedDate);
+    console.log(selectedDate);
     return (
         <div className="flex flex-col md:flex-row items-center bg-white w-full  md:gap-4 rounded-3xl shadow-md p-4">
             <Calendar className='flex' />
             <div className="overflow-x-auto w-full">
                 <h2 className="font-bold text-slate-800 text-xl p-8">
-                    October 28 2023
+                    {selectedDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}
                 </h2>
-                <Table data={testData} title="October 28 2023" />
+                <Table data={testData} title="selectedDate" />
             </div>
         </div>
     );
