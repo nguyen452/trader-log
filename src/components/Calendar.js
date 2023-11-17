@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
 import clsx from "clsx";
 
 function Calendar() {
   // current date the calendar is on (default is today)
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date()); // date that is selected by the user
+
+  const dispatch = useDispatch();
+  const selectedDate = useSelector(selectSelectedDate);
 
   //helper function to switch the month
   const switchMonth = (increment) => {
@@ -43,7 +47,7 @@ function Calendar() {
   };
 
   return (
-    <div className="bg-white rounded aspect-square container p-4">
+    <div className="bg-white rounded aspect-square container p-4 max-w-md">
       <div className="flex justify-between items-center mb-4">
       {/* Calendar Header */}
         <h1 className="text-xl font-semibold">
@@ -90,13 +94,13 @@ function Calendar() {
             <div
               className="w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1"
               onClick={() =>
-                setSelectedDate(new Date(date.year, date.month, date.day))
+                dispatch(setSelectedDate(new Date(date.year, date.month, date.day)))
               }
             >
               <p className={clsx({
                 "p-2 aspect-square flex items-center justify-center": true,
                 // text will be blue if it is today
-                "text-blue-500": date.year === todaysDate.year && date.month === todaysDate.month && date.day === todaysDate.day,
+                "text-blue-500 font-semibold": date.year === todaysDate.year && date.month === todaysDate.month && date.day === todaysDate.day,
                 //  text will be gray if it is not the current month
                 "text-gray-300": date.month !== currentDate.getMonth(),
                 // selected date will have white text and blue background when selected
