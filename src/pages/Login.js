@@ -38,7 +38,7 @@ const Login = () => {
             <main className="flex text-slate-800 container mx-auto mb-80  ">
                 <section className="w-1/2 p-4 hidden md:flex md:flex-col">
                     <img
-                        src="loginPic.png"
+                        src="flat-login1.png"
                         alt="people discussing trades"
                         className="shadow-lg rounded-3xl"/>
                 </section>
