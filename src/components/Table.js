@@ -16,13 +16,16 @@ const Table = ({ data, title }) => {
                     "border-collapse",
                     "border",
                     "border-zinc-100",
-                    "bg-white"
+                    "bg-white",
+                    "text-base",
+                    "font-light"
+
                 )}
             >
-                <thead className="">
-                    <tr className="bg-zinc-100 text-zinc-700">
+                <thead className="font-light">
+                    <tr className="bg-blue-50 text-zinc-700 text-base">
                         {Object.keys(data[0]).map((columnName) => (
-                            <th className="p-4" key={columnName}>
+                            <th className="p-4 font-medium" key={columnName}>
                                 {" "}
                                 {columnName}{" "}
                             </th>
@@ -30,12 +33,17 @@ const Table = ({ data, title }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((rowItem) => {
+                    {data.map((rowItem, index) => {
                         return (
-                            <tr>
-                                {Object.values(rowItem).map((dataPoint) => {
+                            <tr className={clsx({
+                                "hover:bg-slate-100": true,
+                                "bg-zinc-50": index % 2 === 0
+                            })}>
+                                {Object.values(rowItem).map((dataPoint, index) => {
                                     return (
-                                        <td className="text-center p-4">
+                                        <td className={clsx({
+                                            "text-center p-4": true,
+                                        })}>
                                             {dataPoint}
                                         </td>
                                     );
