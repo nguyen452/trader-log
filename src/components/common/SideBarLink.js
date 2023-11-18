@@ -6,7 +6,7 @@ const SideBarLink = ({ text, link, icon }) => {
     <NavLink
       to={link}
       className={({ isActive }) =>
-        `${isActive ? 'text-traderBlue' : 'text-slate-500'} flex items-center w-40 h-12  text-md rounded-md hover:bg-slate-100 hover:shadow-lg`
+        `${isActive ? 'text-traderBlue' : 'text-slate-500'} flex items-center w-40 h-12  text-md rounded-md p-3 hover:bg-slate-100 hover:shadow-lg`
       }
     >
       {icon}
