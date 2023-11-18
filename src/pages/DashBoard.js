@@ -1,6 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {selectSelectedPeriod} from "../slice/periodSlice";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    fetchDashboard,
+    changePeriod,
+    filteredBySelectedPeriod,
+    selectDashboardData,
+    selectSelectedPeriod,
+    selectDashboardIsLoading,
+    selectDashboardHasError
+} from "../slice/dashboardSlice";
 import getLastNumbersOfDayProfit from "../utils/getLastNumbersOfDayProfit";
 import DashboardGrid from "../layout/DashboardGrid";
 import Cards from "../components/Cards";
@@ -49,26 +57,27 @@ const tradeData = [
     },
 ];
 const DashBoard = () => {
-    const [tradesPerformance, setTradesPerformance] = useState({});
+    const dashboardData = useSelector(selectDashboardData);
     const selectedPeriod = useSelector(selectSelectedPeriod);
+    const isLoading = useSelector(selectDashboardIsLoading);
+    const hasError = useSelector(selectDashboardHasError);
+    const dispatch = useDispatch();
 
+    //helper function to transform period to kebab case
     const transformPeriodToKebabCase = (period) => {
         period = period.split(" ");
         return period.join("-").toLowerCase();
+    };
+    useEffect(() => {
+        dispatch(fetchDashboard(transformPeriodToKebabCase(selectedPeriod)));
+    }, [selectedPeriod, dispatch]);
+
+    if(isLoading || !dashboardData) {
+        return <div>Loading...</div>
+    } else if(hasError) {
+        return <div>Something went wrong...</div>
     }
 
-    useEffect(() => {
-        const pullTradeData = async() => {
-            const response = await fetch(`http://localhost:4000/api/trades/tradeMetrics/${transformPeriodToKebabCase(selectedPeriod)}`, {
-                method: 'GET',
-                credentials: 'include'
-            })
-            const data =  await response.json();
-            setTradesPerformance(data.tradingPerformanceMetrics)
-        }
-        pullTradeData()
-    }, [selectedPeriod]);
-    console.log(tradesPerformance.profitsPerDay)
     return (
         <main className="flex w-full">
             <div className="w-full">
@@ -77,48 +86,89 @@ const DashBoard = () => {
                     gridItems={{
                         card1: (
                             <Cards
-                                title='Total Return'
-                                content={tradesPerformance.totalReturn}
-                                chart={<ProfitMiniAreaChart data={tradesPerformance.accumulatedProfitsPerDay} />}
+                                title="Total Return"
+                                content={dashboardData.totalReturn}
+                                chart={
+                                    <ProfitMiniAreaChart
+                                        data={
+                                            dashboardData.accumulatedProfitsPerDay
+                                        }
+                                    />
+                                }
                             />
                         ),
                         card2: (
                             <Cards
                                 title="Profit Factor"
-                                content={tradesPerformance.profitFactor}
-                                chart={<ProfitFactorMiniBarChart data={tradesPerformance.profitFactor} />}
+                                content={dashboardData.profitFactor}
+                                chart={
+                                    <ProfitFactorMiniBarChart
+                                        data={dashboardData.profitFactor}
+                                    />
+                                }
                             />
                         ),
                         card3: (
                             <Cards
                                 title="Win Rate"
-                                content={`${tradesPerformance.winningPercentage} %`}
-                                chart={< WinRatePieChart   data={[
-                                    {
-                                        name: "Total Winning Trades",
-                                        value: tradesPerformance.totalWinningTrades,
-                                    },
-                                    {
-                                        name: "Total Losing Trades",
-                                        value: tradesPerformance.totalLosingTrades,
-                                    },
-                                    {
-                                        name: "Breakeven",
-                                        value: tradesPerformance.totalBreakevenTrades
-                                    }
-                                ]} />}
+                                content={`${dashboardData.winningPercentage} %`}
+                                chart={
+                                    <WinRatePieChart
+                                        data={[
+                                            {
+                                                name: "Total Winning Trades",
+                                                value: dashboardData.totalWinningTrades,
+                                            },
+                                            {
+                                                name: "Total Losing Trades",
+                                                value: dashboardData.totalLosingTrades,
+                                            },
+                                            {
+                                                name: "Breakeven",
+                                                value: dashboardData.totalBreakevenTrades,
+                                            },
+                                        ]}
+                                    />
+                                }
                             />
                         ),
                         card4: (
                             <Cards
                                 title="Average Win vs Loss"
-                                content={`${tradesPerformance.averageReturn}`}
-                                chart={<AverageWinVsLossBarChart data={[{name: 'averages', averageWin: tradesPerformance.averageWin, averageLoss: tradesPerformance.averageLoss}]} />}
+                                content={`${dashboardData.averageReturn}`}
+                                chart={
+                                    <AverageWinVsLossBarChart
+                                        data={[
+                                            {
+                                                name: "averages",
+                                                averageWin:
+                                                    dashboardData.averageWin,
+                                                averageLoss:
+                                                    dashboardData.averageLoss,
+                                            },
+                                        ]}
+                                    />
+                                }
                             />
                         ),
-                        recentTradesWidget: <RecentTradesWidget />,
-                        equityCurve: <Profits data={ tradesPerformance.accumulatedProfitsPerDay} />,
-                        recentTrade: <BarChartRecentPerformance data={getLastNumbersOfDayProfit(tradesPerformance.profitsPerDay, 5)}/>,
+                        recentTradesWidget: (
+                            <RecentTradesWidget
+                                data={dashboardData.completeTradesInfo}
+                            />
+                        ),
+                        equityCurve: (
+                            <Profits
+                                data={dashboardData.accumulatedProfitsPerDay}
+                            />
+                        ),
+                        recentTrade: (
+                            <BarChartRecentPerformance
+                                data={getLastNumbersOfDayProfit(
+                                    dashboardData.profitsPerDay,
+                                    5
+                                )}
+                            />
+                        ),
                         dataTable: (
                             <div className=" w-full flex flex-col bg-white rounded-3xl shadow-md overflow-x-auto">
                                 <h2 className="font-bold text-slate-800 text-xl p-8">

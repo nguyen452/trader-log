@@ -2,6 +2,12 @@ import React from "react";
 import clsx from "clsx";
 
 const Table = ({ data, title }) => {
+    if (!data) {
+        return <div>Loading...</div>;
+    } else if (data.length === 0) {
+        return <div>No trades on this day</div>;
+    }
+    console.log(data)
     return (
         <table
                 className={clsx(

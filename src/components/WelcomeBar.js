@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ButtonWithDropDownMenu from "./common/ButtonWithDropDownMenu";
 import { useSelector } from "react-redux";
-import { selectSelectedPeriod, changePeriod } from "../slice/periodSlice";
+import { selectSelectedPeriod, changePeriod } from "../slice/dashboardSlice";
 
 const WelcomeBar = () => {
     const selectedPeriod = useSelector(selectSelectedPeriod);

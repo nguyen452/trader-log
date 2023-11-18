@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
+import { filteredBySelectedDate } from "../slice/dashboardSlice";
 import clsx from "clsx";
 
 function Calendar() {
@@ -8,7 +9,7 @@ function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const dispatch = useDispatch();
-  const selectedDate = useSelector(selectSelectedDate);
+  const selectedDate = new Date (useSelector(selectSelectedDate));
 
   //helper function to switch the month
   const switchMonth = (increment) => {
@@ -72,7 +73,7 @@ function Calendar() {
 
       {/* Days of the Week */}
       <div className="grid grid-cols-7 row-gap-4 py-4">
-        {["M", "T", "W", "T", "F", "S", "S"].map((day) => (
+        {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
           <div className="text-center font-medium" >{day}</div>
         ))}
       </div>
@@ -93,8 +94,11 @@ function Calendar() {
           return (
             <div
               className="w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1"
-              onClick={() =>
-                dispatch(setSelectedDate(new Date(date.year, date.month, date.day)))
+              onClick={() =>{
+                dispatch(setSelectedDate(new Date(date.year, date.month, date.day)));
+                dispatch(filteredBySelectedDate(new Date(date.year, date.month, date.day)));
+              }
+
               }
             >
               <p className={clsx({

@@ -11,7 +11,7 @@ import {
 import ButtonWithDropDownMenu from "../../components/common/ButtonWithDropDownMenu";
 import { useSelector } from "react-redux";
 import { selectSelectedPeriod, changePeriod } from "../../slice/periodSlice";
-import getFilteredDataByPeriod from "../../utils/getFilteredDataByPeriod";
+import getFilteredDataByPeriod from "../../utils/getFilteredDataBySelectedDay";
 
 const chartStyle = {
     fontFamily: "Poppins",

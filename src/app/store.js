@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../slice/authSlice'
 import signUpReducer from '../slice/signUpSlice'
-import periodReducer from '../slice/periodSlice'
+import dashboardReducer from '../slice/dashboardSlice';
 import calendarReducer from '../slice/calendarSlice';
 
 export const store = configureStore({
@@ -9,6 +9,6 @@ export const store = configureStore({
     authenticate: authReducer,
     calendar: calendarReducer,
     createUser: signUpReducer,
-    period: periodReducer,
+    dashboard: dashboardReducer,
   },
 });
