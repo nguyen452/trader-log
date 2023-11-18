@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
-import { filteredBySelectedDate } from "../slice/dashboardSlice";
+import { filteredBySelectedDate, selectDashboardData } from "../slice/dashboardSlice";
 import clsx from "clsx";
+
+
+
 
 function Calendar() {
   // current date the calendar is on (default is today)
   const [currentDate, setCurrentDate] = useState(new Date());
+  const data = useSelector(selectDashboardData);
+
+
 
   const dispatch = useDispatch();
   const selectedDate = new Date (useSelector(selectSelectedDate));
@@ -47,6 +53,28 @@ function Calendar() {
     return arrayofDays;
   };
 
+
+    //helper function to determine if the day is profitable
+    const isDayProfitable = (day) => {
+      console.log(data.profitsPerDay)
+      if (!data.profitsPerDay){
+        return "no data"
+      }
+      // take day and parse it using isoString and to get the date only
+      const dayToCheck = new Date(day).toISOString().slice(0, 10);
+      //write condition to check if the day is profitable
+      if (!(dayToCheck in data.profitsPerDay)) {
+        return 'no data'
+      } else if (data.profitsPerDay[dayToCheck] > 0) {
+        return 'profitable';
+      } else if (data.profitsPerDay[dayToCheck] < 0) {
+        return 'not profitable';
+      } else {
+        return "no data";
+      }
+    };
+
+
   return (
     <div className="bg-white rounded aspect-square container p-4 max-w-md">
       <div className="flex justify-between items-center mb-4">
@@ -85,7 +113,7 @@ function Calendar() {
         {getDaystoPopulateCalendar(
           currentDate.getFullYear(),
           currentDate.getMonth()
-        ).map((date) => {
+        ).map((date, index) => {
           const todaysDate = {
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
@@ -93,7 +121,17 @@ function Calendar() {
           };
           return (
             <div
-              className="w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1"
+              className= {clsx(
+                "w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1 border-b-2 border-r-2 border-white " ,
+                // background green if day is profitable
+                {"bg-green-100": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
+                // background red if day is not profitable
+                {"bg-red-100": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
+                // background white if there is no data
+                {"bg-white": isDayProfitable(new Date(date.year, date.month, date.day)) === "no data"},
+                {}
+              )}
+              key={index}
               onClick={() =>{
                 dispatch(setSelectedDate(new Date(date.year, date.month, date.day)));
                 dispatch(filteredBySelectedDate(new Date(date.year, date.month, date.day)));
