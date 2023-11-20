@@ -1,13 +1,14 @@
 import React from "react";
 import clsx from "clsx";
 
+
 const Table = ({ data, title }) => {
     if (!data) {
         return <div>Loading...</div>;
     } else if (data.length === 0) {
-        return <div>No trades on this day</div>;
+        return <div>There are no trades </div>;
     }
-    console.log(data)
+    // slice up the data to only show the last 10 trades, place the other trades in a separate array, on top of page have button to select to show last 30 trades, 20 trades, 10 trades.
     return (
         <table
                 className={clsx(
@@ -24,7 +25,8 @@ const Table = ({ data, title }) => {
             >
                 <thead className="font-light">
                     <tr className="bg-blue-50 text-zinc-700 text-base">
-                        {Object.keys(data[0]).map((columnName) => (
+                        {/* take the first element of data array and extract the keys as header */}
+                        {Object.keys(data[0]).splice(1).map((columnName) => (
                             <th className="p-4 font-medium" key={columnName}>
                                 {" "}
                                 {columnName}{" "}
@@ -33,20 +35,26 @@ const Table = ({ data, title }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((rowItem, index) => {
+                    {/* destructure tradeId from data  */}
+                    {data.map(({tradeId, ...rowItem}, index) => {
                         return (
                             <tr className={clsx({
                                 "hover:bg-slate-100": true,
                                 "bg-zinc-50": index % 2 === 0
-                            })}>
-                                {Object.values(rowItem).map((dataPoint, index) => {
+                            })}
+                                key={tradeId}
+                            >
+                                {Object.entries(rowItem).map(([key, value]) => {
                                     return (
                                         <td className={clsx({
                                             "text-center p-4": true,
+                                            //  text will be green if profitable
+                                            "text-green-500": key === "P&L" && value > 0,
+                                            "text-red-500": key === "P&L" && value < 0,
                                         })}>
-                                            {dataPoint}
+                                            {key === "P&L" ? `$ ${value}` : value}
                                         </td>
-                                    );
+                                    )
                                 })}
                             </tr>
                         );

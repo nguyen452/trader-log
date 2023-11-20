@@ -19,5 +19,4 @@ const data = {
     "2023-10-11": 62.69,
 };
 
-console.log(getLastNumbersOfDayProfit(data, 2));
 module.exports = getLastNumbersOfDayProfit;

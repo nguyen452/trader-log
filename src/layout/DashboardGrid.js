@@ -6,18 +6,26 @@ const DashboardGrid = ({ gridItems }) => {
             <div className="h-full mx-auto container">
                 <div className="flex flex-col md:grid md:grid-cols-12 gap-4 p-4">
                     {/* grid grid-cols-12 grid-rows-6 w-full p-4 gap-4 h-screen"> */}
-                    <div className=" w-full md:col-span-6 xl:col-span-3 ">{gridItems.card1}</div>
-                    <div className="w-full md:col-span-6 xl:col-span-3 ">{gridItems.card2}</div>
-                    <div className="w-full  md:col-span-6 xl:col-span-3">{gridItems.card3}</div>
-                    <div className="w-full  md:col-span-6 xl:col-span-3">{gridItems.card4}</div>
+                    <div className=" w-full md:col-span-6 xl:col-span-3 ">
+                        {gridItems.card1}
+                    </div>
+                    <div className="w-full md:col-span-6 xl:col-span-3 ">
+                        {gridItems.card2}
+                    </div>
+                    <div className="w-full  md:col-span-6 xl:col-span-3">
+                        {gridItems.card3}
+                    </div>
+                    <div className="w-full  md:col-span-6 xl:col-span-3">
+                        {gridItems.card4}
+                    </div>
                     <div className="md:col-span-8">{gridItems.equityCurve}</div>
                     <div className="w-full md:col-span-4">
                         {gridItems.recentTrade}
                     </div>
-                    <div className="md:col-span-12">{gridItems.dataTable}</div>
                     <div className="w-full md:col-span-12">
-                        {gridItems.recentTradesWidget}
+                        {gridItems.selectDayWidget}
                     </div>
+                    <div className="md:col-span-12">{gridItems.dataTable}</div>
                 </div>
             </div>
         </div>

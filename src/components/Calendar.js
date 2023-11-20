@@ -56,7 +56,6 @@ function Calendar() {
 
     //helper function to determine if the day is profitable
     const isDayProfitable = (day) => {
-      console.log(data.profitsPerDay)
       if (!data.profitsPerDay){
         return "no data"
       }
@@ -124,9 +123,9 @@ function Calendar() {
               className= {clsx(
                 "w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1 border-b-2 border-r-2 border-white " ,
                 // background green if day is profitable
-                {"bg-green-100": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
+                {"bg-green-100 hover:bg-green-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
                 // background red if day is not profitable
-                {"bg-red-100": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
+                {"bg-red-100 hover:bg-red-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
                 // background white if there is no data
                 {"bg-white": isDayProfitable(new Date(date.year, date.month, date.day)) === "no data"},
                 {}

@@ -8,7 +8,6 @@ const getFilteredDataBySelectedDay = (data, selectedDay) => {
         selectedDay = new Date (selectedDay).toISOString().slice(0, 10);
         return tradeDate === selectedDay;
     });
-    console.log(filteredData)
     return filteredData;
 
 };

@@ -31,14 +31,19 @@ const dashboardSlice = createSlice({
         hasError: false,
         data: null,
         selectedPeriod: "All time",
+        recentTradesPeriod: "Last 10 trades",
+        recentTradesData: null,
+        recentTradesFilteredData: null
     },
     reducers: {
         changePeriod: (state, action) => {
             state.selectedPeriod = action.payload;
         },
         filteredBySelectedDate: (state, action) => {
-            console.log(action.payload)
             state.data.filteredTradeByDay = getFilteredDataBySelectedDay(state.data.completeTradesInfo, action.payload)
+        },
+        changeRecentTradesPeriod: (state, action) => {
+            state.recentTradesPeriod = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -65,5 +70,6 @@ export const selectDashboardIsLoading = (state) => state.dashboard.isLoading;
 export const selectDashboardHasError = (state) => state.dashboard.hasError;
 export const selectSelectedPeriod = (state) => state.dashboard.selectedPeriod;
 export const selectFilteredTradeByDay = (state) => state.dashboard.data.filteredTradeByDay;
-export const { changePeriod ,filteredBySelectedDate } = dashboardSlice.actions;
+export const selectRecentTradesPeriod = (state) => state.dashboard.recentTradesPeriod;
+export const { changePeriod ,filteredBySelectedDate, changeRecentTradesPeriod } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

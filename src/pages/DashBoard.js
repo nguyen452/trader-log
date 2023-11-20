@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import clsx from "clsx";
 import {
     fetchDashboard,
     changePeriod,
@@ -7,20 +8,20 @@ import {
     selectDashboardData,
     selectSelectedPeriod,
     selectDashboardIsLoading,
-    selectDashboardHasError
+    selectDashboardHasError,
 } from "../slice/dashboardSlice";
 import getLastNumbersOfDayProfit from "../utils/getLastNumbersOfDayProfit";
 import DashboardGrid from "../layout/DashboardGrid";
 import Cards from "../components/Cards";
 import Profits from "../layout/profits/Profits";
-import RecentTradesWidget from "../features/RecentTradesWidget";
+import SelectDayWidget from "../features/SelectDayWidget";
 import ProfitMiniAreaChart from "../components/ProfitsMiniAreaChart";
 import ProfitFactorMiniBarChart from "../components/ProfitFactorMiniBarChart";
 import WinRatePieChart from "../components/WinRatePieChart";
 import BarChartRecentPerformance from "../components/BarChartRecentPerformance";
-import Table from "../components/Table";
 import AverageWinVsLossBarChart from "../components/AverageWinVsLossBarChart";
 import WelcomeBar from "../components/WelcomeBar";
+import RecentTradesOpenTrades from "../components/RecentTradesOpenTrades";
 const tradeData = [
     {
         ID: 1,
@@ -63,19 +64,15 @@ const DashBoard = () => {
     const hasError = useSelector(selectDashboardHasError);
     const dispatch = useDispatch();
 
-    //helper function to transform period to kebab case
-    const transformPeriodToKebabCase = (period) => {
-        period = period.split(" ");
-        return period.join("-").toLowerCase();
-    };
+
     useEffect(() => {
-        dispatch(fetchDashboard(transformPeriodToKebabCase(selectedPeriod)));
+        dispatch(fetchDashboard(selectedPeriod));
     }, [selectedPeriod, dispatch]);
 
-    if(isLoading || !dashboardData) {
-        return <div>Loading...</div>
-    } else if(hasError) {
-        return <div>Something went wrong...</div>
+    if (isLoading || !dashboardData) {
+        return <div>Loading...</div>;
+    } else if (hasError) {
+        return <div>Something went wrong...</div>;
     }
 
     return (
@@ -151,8 +148,8 @@ const DashBoard = () => {
                                 }
                             />
                         ),
-                        recentTradesWidget: (
-                            <RecentTradesWidget
+                        selectDayWidget: (
+                            <SelectDayWidget
                                 data={dashboardData.completeTradesInfo}
                             />
                         ),
@@ -165,23 +162,11 @@ const DashBoard = () => {
                             <BarChartRecentPerformance
                                 data={getLastNumbersOfDayProfit(
                                     dashboardData.profitsPerDay,
-                                    5
+                                    10
                                 )}
                             />
                         ),
-                        dataTable: (
-                            <div className=" w-full flex flex-col bg-white rounded-3xl shadow-md overflow-x-auto">
-                                <h2 className="font-bold text-slate-800 text-xl p-8">
-                                    title
-                                </h2>
-                                <Table data={tradeData} />
-                                <div className="text-right p-4 ">
-                                    <button className="bg-zinc-100 p-2 rounded-xl">
-                                        View All
-                                    </button>
-                                </div>
-                            </div>
-                        ),
+                        dataTable: <RecentTradesOpenTrades data={dashboardData.completeTradesInfo} />,
                     }}
                 />
             </div>
