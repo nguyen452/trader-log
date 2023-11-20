@@ -166,7 +166,7 @@ const DashBoard = () => {
                                 )}
                             />
                         ),
-                        dataTable: <RecentTradesOpenTrades data={dashboardData.completeTradesInfo} />,
+                        dataTable: <RecentTradesOpenTrades recentTradeData={dashboardData.completeTradesInfo} openTradeData = {[]} />,
                     }}
                 />
             </div>
