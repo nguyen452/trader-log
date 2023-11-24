@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
 import { filteredBySelectedDate, selectDashboardData } from "../slice/dashboardSlice";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import clsx from "clsx";
 
 
 
 
-function Calendar() {
+function Calendar({displayProfitableDays}) {
   // current date the calendar is on (default is today)
   const [currentDate, setCurrentDate] = useState(new Date());
   const data = useSelector(selectDashboardData);
@@ -87,13 +89,13 @@ function Calendar() {
             className="mx-3 text-xl text-slate-500 hover:bg-slate-100"
             onClick={() => switchMonth(false)}
           >
-            {"<"}
+            <ChevronLeftIcon />
           </button>
           <button
             className="mx-3 text-xl text-slate-500 hover:bg-slate-100"
             onClick={() => switchMonth(true)}
           >
-            {">"}
+            <ChevronRightIcon />
           </button>
         </div>
       </div>
@@ -123,9 +125,9 @@ function Calendar() {
               className= {clsx(
                 "w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1 border-b-2 border-r-2 border-white " ,
                 // background green if day is profitable
-                {"bg-green-100 hover:bg-green-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
+                {"bg-green-100 hover:bg-green-300": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
                 // background red if day is not profitable
-                {"bg-red-100 hover:bg-red-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
+                {"bg-red-100 hover:bg-red-300": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
                 // background white if there is no data
                 {"bg-white": isDayProfitable(new Date(date.year, date.month, date.day)) === "no data"},
                 {}
