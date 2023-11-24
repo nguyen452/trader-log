@@ -4,6 +4,7 @@ import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import StorageRoundedIcon from "@mui/icons-material/StorageRounded";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import TableViewIcon from '@mui/icons-material/TableView';
 import { useParams } from "react-router-dom";
 
 const Sidebar = () => {
@@ -16,6 +17,7 @@ const Sidebar = () => {
       </div>
       <div className="flex flex-col mt-28 m h-72 justify-between items-center">
         <SideBarLink text="Dashboard" link={`/user/${userId}/dashboard`} icon={<GridViewOutlinedIcon className="h-5 w-5 mr-3" />} />
+        <SideBarLink text="Trade log" link={`/user/${userId}/trade-log`} icon={<TableViewIcon className="h-5 w-5 mr-3" />} />
         <SideBarLink text="Reports" link={`/user/${userId}/reports`} icon={<AnalyticsOutlinedIcon className="h-5 w-5 mr-3" />} />
         <SideBarLink text="Calendar" link={`/user/${userId}/calendar`} icon={< CalendarMonthOutlinedIcon className="h-5 w-5 mr-3" />} />
         <SideBarLink text="Journal" link={`/user/${userId}/journal`} icon={<FeedOutlinedIcon className="h-5 w-5 mr-3" />} />
