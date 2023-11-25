@@ -1,11 +1,13 @@
 import React from "react";
 import Calendar from "../components/Calendar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate } from "../slice/calendarSlice";
 import { selectFilteredTradeByDay } from "../slice/dashboardSlice";
+import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
 import Table from "../components/Table";
 
 const RecentTradesWidget = () => {
+    const dispatch = useDispatch();
     const selectedDate = new Date(useSelector(selectSelectedDate));
 
     const dataBySelectedDay = useSelector(selectFilteredTradeByDay);
@@ -16,7 +18,7 @@ const RecentTradesWidget = () => {
 
     return (
         <div className="flex flex-col md:flex-row items-center bg-white w-full h-full md:gap-4 rounded-3xl shadow-md p-4">
-            <Calendar className="flex" />
+        <Calendar displayProfitableDays={true} action={function(){'test'}} test='test' />
             <div className="w-full h-full">
                 <h2 className="font-bold text-slate-800 text-xl p-8">
                     {selectedDate.toLocaleDateString("en-US", {

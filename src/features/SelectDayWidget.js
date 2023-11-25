@@ -1,12 +1,19 @@
 import React from "react";
 import Calendar from "../components/Calendar";
-import { useSelector } from "react-redux";
-import { selectSelectedDate } from "../slice/calendarSlice";
-import { selectFilteredTradeByDay } from "../slice/dashboardSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
+import { filteredBySelectedDate, selectFilteredTradeByDay } from "../slice/dashboardSlice";
 import Table from "../components/Table";
 
 const SelectDayWidget = () => {
     const selectedDate = new Date(useSelector(selectSelectedDate));
+    const dispatch = useDispatch();
+
+    const handleChangeDate = (selectedDate) => {
+        dispatch(setSelectedDate(selectedDate));
+        dispatch(filteredBySelectedDate(selectedDate));
+    }
+
 
     const dataBySelectedDay = useSelector(selectFilteredTradeByDay);
     // data =  getFilteredDataBySelectedDay(data, selectedDate);
@@ -16,7 +23,9 @@ const SelectDayWidget = () => {
 
     return (
         <div className="flex flex-col md:flex-row items-center bg-white w-full h-full md:gap-4 rounded-3xl shadow-md p-4">
-            <Calendar className="flex" />
+            <Calendar className="flex" displayProfitableDays={true} action= {(selectedDate) => {
+                handleChangeDate(selectedDate);
+            }} />
             <div className="w-full h-full">
                 <h2 className="font-normal text-slate-800 text-xl p-8">
                     {selectedDate.toLocaleDateString("en-US", {

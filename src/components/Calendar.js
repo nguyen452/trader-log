@@ -9,10 +9,13 @@ import clsx from "clsx";
 
 
 
-function Calendar({displayProfitableDays}) {
+function Calendar({displayProfitableDays, action, test}) {
   // current date the calendar is on (default is today)
   const [currentDate, setCurrentDate] = useState(new Date());
   const data = useSelector(selectDashboardData);
+  console.log(action)
+  console.log(displayProfitableDays)
+  console.log(test)
 
 
 
@@ -58,7 +61,7 @@ function Calendar({displayProfitableDays}) {
 
     //helper function to determine if the day is profitable
     const isDayProfitable = (day) => {
-      if (!data.profitsPerDay){
+      if (!data || !displayProfitableDays){
         return "no data"
       }
       // take day and parse it using isoString and to get the date only
@@ -78,9 +81,9 @@ function Calendar({displayProfitableDays}) {
 
   return (
     <div className="bg-white rounded aspect-square container p-4 max-w-md">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center">
       {/* Calendar Header */}
-        <h1 className="text-xl font-semibold">
+        <h1 className="text-md font-semibold">
           {currentDate.toLocaleString("default", { month: "long" })}{" "}
           {currentDate.getFullYear()}
         </h1>
@@ -123,19 +126,19 @@ function Calendar({displayProfitableDays}) {
           return (
             <div
               className= {clsx(
-                "w-full h-full flex flex-col justify-center hover:cursor-pointer hover:bg-slate-50 aspect-square p-1 border-b-2 border-r-2 border-white " ,
+                "w-full h-full flex flex-col justify-center hover:cursor-pointer aspect-square p-1 border-b-2 border-r-2 border-white " ,
                 // background green if day is profitable
-                {"bg-green-100 hover:bg-green-300": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
+                {"bg-green-100 hover:bg-green-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "profitable"},
                 // background red if day is not profitable
-                {"bg-red-100 hover:bg-red-300": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
+                {"bg-red-100 hover:bg-red-200": isDayProfitable(new Date(date.year, date.month, date.day)) === "not profitable"},
                 // background white if there is no data
-                {"bg-white": isDayProfitable(new Date(date.year, date.month, date.day)) === "no data"},
+                {"bg-white hover:bg-slate-50": isDayProfitable(new Date(date.year, date.month, date.day)) === "no data"},
                 {}
               )}
               key={index}
               onClick={() =>{
-                dispatch(setSelectedDate(new Date(date.year, date.month, date.day)));
-                dispatch(filteredBySelectedDate(new Date(date.year, date.month, date.day)));
+                action(new Date(date.year, date.month, date.day));
+
               }
 
               }
