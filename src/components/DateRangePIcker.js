@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Calendar from "./Calendar";
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import clsx from "clsx";
 
 const DateRangePicker = () => {
@@ -29,7 +30,15 @@ const DateRangePicker = () => {
     });
 
     return (
-        <form className="flex space-x-4">
+        <form className="flex space-x-4 rounded-lg">
+            {endDateError && (
+                <div className="flex items-center">
+                    <PriorityHighIcon className="text-red-500" />
+                    <p className="text-red-500 text-sm">
+                        End date must be after start date
+                    </p>
+                </div>
+            )}
             <div className="relative">
                 <DateRangeIcon
                     fontSize="small"
@@ -38,7 +47,7 @@ const DateRangePicker = () => {
                 <input
                     type="text"
                     placeholder="Select date start"
-                    className="focus:outline-blue-500 h-8 px-10 w-56 text-slate-700"
+                    className="focus:outline-blue-500 h-8 px-10 w-56 text-slate-700 rounded-lg"
                     onClick={() =>
                         setShowStartCalendar((prevState) => !prevState)
                     }
@@ -65,21 +74,16 @@ const DateRangePicker = () => {
                 )}
             </div>
             <p className="text-lg font-light text-slate-700">to</p>
-            <div className="relative ">
+            <div className="relative  rounded-lg ">
                 <DateRangeIcon
                     fontSize="small"
                     className="text-gray-500 text-lg mx-3 absolute top-1.5 left-"
                 />
-                  {endDateError && (
-                    <p className="text-red-500 text-sm absolute top-8 left-10 z-10">
-                        End date must be after start date
-                    </p>
-                )}
                 <input
                     type="text"
                     placeholder="Select date end"
                     className={clsx({
-                        "focus:outline-blue-500 h-8 px-10 w-56 text-slate-700": true,
+                        "focus:outline-blue-500 h-8 px-10 w-56 text-slate-700 rounded-lg": true,
                         "border-2 border-red-500": endDateError,
                     })}
                     onClick={() =>
@@ -105,8 +109,11 @@ const DateRangePicker = () => {
                                 setEndDate(`${month}-${day}-${year}`);
                                 if (selectedDate < new Date(startDate)) {
                                     setEndDateError(true);
+                                } else {
+                                    setEndDateError(false);
                                 }
-                            }} />
+                            }}
+                        />
                     </div>
                 )}
             </div>
