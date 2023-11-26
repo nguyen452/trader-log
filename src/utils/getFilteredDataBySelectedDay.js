@@ -3,7 +3,7 @@ const getFilteredDataBySelectedDay = (data, selectedDay) => {
         return [];
     }
     const filteredData = data.filter((trade) => {
-        let tradeDate = new Date(trade.date);
+        let tradeDate = new Date(trade.date_close);
         tradeDate = tradeDate.toISOString().slice(0, 10);
         selectedDay = new Date (selectedDay).toISOString().slice(0, 10);
         return tradeDate === selectedDay;
