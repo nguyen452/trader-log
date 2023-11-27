@@ -7,7 +7,8 @@ const ButtonWithDropDownMenu = ({ name, list, action }) => {
     const dispatch = useDispatch();
     const menuRef = useRef(null);
 
-    const handleChangePeriod = (item) => {
+    const handleAction = (item) => {
+        console.log(action)
         dispatch(action(item));
         setIsMenuOpen(false);
     };
@@ -71,7 +72,7 @@ const ButtonWithDropDownMenu = ({ name, list, action }) => {
                         <div
                             className="p-2 font-light text-center text-sm text-slate-400 hover:bg-slate-50 hover:cursor-pointer hover:text-slate-700"
                             key={item}
-                            onClick={() => handleChangePeriod(item)}
+                            onClick={() => handleAction(item)}
                         >
                             {item}
                         </div>

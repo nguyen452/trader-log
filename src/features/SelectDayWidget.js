@@ -42,11 +42,6 @@ const SelectDayWidget = () => {
                 <div>
                      <Table
                         data={dataBySelectedDay}
-                        title={selectedDate.toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })}
                     />
                 </div>
                 )}

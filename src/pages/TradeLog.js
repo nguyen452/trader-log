@@ -70,19 +70,6 @@ const TradeLog = () => {
 
     // helper function to change limit of trades per page
 
-    const handleShowLimit = (limit) => {
-        dispatch(setShow(limit));
-    };
-
-    const handlePageChange = (page) => {
-        dispatch(setPage(page));
-    };
-
-
-
-
-
-
 
     return (
         <main className=" flex flex-col w-full p-4">
@@ -158,6 +145,11 @@ const TradeLog = () => {
                     />
                     <div className="border-l-2 h-12"></div>
                     <h2 className="">{`${tradeNumberStart}-${tradeNumberEnd} out of ${data.completeTradesInfo.length}`}</h2>
+                    <ButtonWithDropDownMenu
+                        name={page}
+                        list ="number of pages"
+                        action = setPage
+                    />
                 </div>
             </div>
         </main>
