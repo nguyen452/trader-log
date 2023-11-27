@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch } from "react-redux";
-// import { updateSearchTerm } from "./searchSlice";
+import { searchTrades } from "../../slice/tradeLogSlice";
 
 const SearchBar = ({ pages, data }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        // dispatch(updateSearchTerm(searchTerm));
+        dispatch(searchTrades(searchTerm));
     };
     return (
         <form
@@ -19,7 +19,11 @@ const SearchBar = ({ pages, data }) => {
                 handleSubmit(searchTerm);
             }}
         >
-            <SearchIcon fontSize="medium" className="text-gray-500 text-xl mx-3" />
+            <SearchIcon
+                fontSize="medium"
+                className="text-gray-500 text-xl mx-3 hover:cursor-pointer "
+                onClick={() => handleSubmit(searchTerm)}
+            />
             <input
                 type="text"
                 placeholder={`Search ${pages}`}
@@ -36,6 +40,7 @@ const SearchBar = ({ pages, data }) => {
                         onClick={() => {
                             // dispatch(updateSearchTerm(""));
                             setSearchTerm((prev) => (prev = ""));
+                            dispatch(searchTrades(""));
                         }}
                     />
                 )}

@@ -29,12 +29,14 @@ import {
     fetchTrades,
 } from "../slice/tradeLogSlice";
 import paginateData from "../utils/paginateData";
+import searchTrade from "../utils/searchTrade";
 
 
 const TradeLog = () => {
     const dispatch = useDispatch();
     const page = useSelector(selectPage);
     const show = useSelector(selectShow);
+    const searchTerm = useSelector(selectSearchTrades);
 
     const tradeNumberStart = (page - 1) * show + 1;
     const tradeNumberEnd = page * show;
@@ -57,6 +59,10 @@ const TradeLog = () => {
 
     let tradeLogData = [...data.completeTradesInfo];
 
+    if (searchTerm) {
+        tradeLogData = searchTrade(tradeLogData, searchTerm);
+    }
+
     tradeLogData = tradeLogData.sort((a, b) => {
        const dateA = new Date(a.date_close);
        const dateB = new Date(b.date_close);
@@ -66,7 +72,7 @@ const TradeLog = () => {
 
     // paginate data
     console.log(page, show)
-    tradeLogData = paginateData(tradeLogData, show, page);
+    const tradeLogDataPaginated = paginateData(tradeLogData, show, page);
 
     // helper function to change limit of trades per page
 
@@ -135,7 +141,7 @@ const TradeLog = () => {
                 />
             </div>
             <div className=" bg-white p-8 mt-8 rounded-3xl shadow-md">
-                <Table data={tradeLogData} />
+                <Table data={tradeLogDataPaginated} />
                 <div className="w-full h-24 flex items-center space-x-4">
                     <h2>Trades per Page:</h2>
                     <ButtonWithDropDownMenu
@@ -144,11 +150,11 @@ const TradeLog = () => {
                         action={setShow}
                     />
                     <div className="border-l-2 h-12"></div>
-                    <h2 className="">{`${tradeNumberStart}-${tradeNumberEnd} out of ${data.completeTradesInfo.length}`}</h2>
+                    <h2 className="">{`${tradeNumberStart}-${tradeNumberEnd} out of ${tradeLogData.length}`}</h2>
                     <ButtonWithDropDownMenu
                         name={page}
-                        list ="number of pages"
-                        action = setPage
+                        list ={[1 ,2]}
+                        action = {setPage}
                     />
                 </div>
             </div>

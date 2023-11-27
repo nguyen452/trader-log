@@ -12,8 +12,6 @@ const FilterBar = () => {
             <div className="flex">
                 <DateRangePicker />
             </div>
-
-            {/* date range picker */}
         </div>
     )
 }
