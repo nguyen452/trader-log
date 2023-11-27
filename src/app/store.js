@@ -3,6 +3,7 @@ import authReducer from '../slice/authSlice'
 import signUpReducer from '../slice/signUpSlice'
 import dashboardReducer from '../slice/dashboardSlice';
 import calendarReducer from '../slice/calendarSlice';
+import tradeLogReducer from '../slice/tradeLogSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     calendar: calendarReducer,
     createUser: signUpReducer,
     dashboard: dashboardReducer,
+    tradeLog: tradeLogReducer,
   },
 });
