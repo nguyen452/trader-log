@@ -30,7 +30,9 @@ import {
 } from "../slice/tradeLogSlice";
 import paginateData from "../utils/paginateData";
 import searchTrade from "../utils/searchTrade";
-
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Pagination from "../components/common/Pagination";
 
 const TradeLog = () => {
     const dispatch = useDispatch();
@@ -38,13 +40,8 @@ const TradeLog = () => {
     const show = useSelector(selectShow);
     const searchTerm = useSelector(selectSearchTrades);
 
-    const tradeNumberStart = (page - 1) * show + 1;
-    const tradeNumberEnd = page * show;
-
-
     useEffect(() => {
         dispatch(fetchTrades());
-
     }, [dispatch]);
 
     const isLoading = useSelector(selectTradesIsLoading);
@@ -64,18 +61,33 @@ const TradeLog = () => {
     }
 
     tradeLogData = tradeLogData.sort((a, b) => {
-       const dateA = new Date(a.date_close);
-       const dateB = new Date(b.date_close);
+        const dateA = new Date(a.date_close);
+        const dateB = new Date(b.date_close);
 
         return dateB - dateA;
-    })
+    });
 
     // paginate data
-    console.log(page, show)
+    console.log(page, show);
     const tradeLogDataPaginated = paginateData(tradeLogData, show, page);
 
     // helper function to change limit of trades per page
 
+    const tradeNumberStart = (page - 1) * show + 1;
+    const tradeNumberEnd = (page, dataLength, limit) => {
+        if (dataLength < limit) {
+            // if (page === 1) {
+            //   return dataLength
+            // }
+            return (page - 1) * limit + dataLength;
+        } else {
+            return page * limit;
+        }
+    };
+
+    const getTotalNumberOfPage = (dataLength, limit) => {
+        return Math.ceil(dataLength / limit);
+    };
 
     return (
         <main className=" flex flex-col w-full p-4">
@@ -96,9 +108,7 @@ const TradeLog = () => {
                     title="Profit Factor"
                     content={data.profitFactor}
                     chart={
-                        <ProfitFactorMiniBarChart
-                            data={data.profitFactor}
-                        />
+                        <ProfitFactorMiniBarChart data={data.profitFactor} />
                     }
                 />
                 <Cards
@@ -142,20 +152,60 @@ const TradeLog = () => {
             </div>
             <div className=" bg-white p-8 mt-8 rounded-3xl shadow-md">
                 <Table data={tradeLogDataPaginated} />
-                <div className="w-full h-24 flex items-center space-x-4">
-                    <h2>Trades per Page:</h2>
-                    <ButtonWithDropDownMenu
-                        name={show}
-                        list={[50, 100, 150]}
-                        action={setShow}
-                    />
-                    <div className="border-l-2 h-12"></div>
-                    <h2 className="">{`${tradeNumberStart}-${tradeNumberEnd} out of ${tradeLogData.length}`}</h2>
-                    <ButtonWithDropDownMenu
-                        name={page}
-                        list ={[1 ,2]}
-                        action = {setPage}
-                    />
+                <div className="flex justify-center">
+                    <div className="w-full h-24 flex items-center space-x-4">
+                        <h2>Trades per Page:</h2>
+                        <ButtonWithDropDownMenu
+                            name={show}
+                            list={[50, 100, 150]}
+                            action={setShow}
+                        />
+                        <div className="border-l-2 h-12"></div>
+                        <h2 className="">
+                            {`${tradeNumberStart}-${tradeNumberEnd(
+                                page,
+                                tradeLogData.length,
+                                show
+                            )} out of ${tradeLogData.length}`}
+                        </h2>
+                    </div>
+                    <div className="flex justify-center items-center">
+                        <div className=" p-2 text-slate-500 hover:bg-slate-100 hover:cursor-pointer">
+                            <ChevronLeftIcon
+                                onClick={() => {
+                                    if (page > 1) {
+                                        dispatch(setPage(page - 1));
+                                    }
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Pagination
+                                currentPage={page}
+                                totalPages={getTotalNumberOfPage(
+                                    tradeLogData.length,
+                                    show
+                                )}
+                                action={setPage}
+                            />
+                        </div>
+                        <div  className="p-2 text-slate-500 hover:bg-slate-100 hover:cursor-pointer">
+                            <ChevronRightIcon
+
+                                onClick={() => {
+                                    if (
+                                        page <
+                                        getTotalNumberOfPage(
+                                            tradeLogData.length,
+                                            show
+                                        )
+                                    ) {
+                                        dispatch(setPage(page + 1));
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
