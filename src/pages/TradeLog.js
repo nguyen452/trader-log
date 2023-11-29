@@ -33,12 +33,15 @@ import searchTrade from "../utils/searchTrade";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Pagination from "../components/common/Pagination";
+import getFilteredDataByDateRange from "../utils/getFilteredDataByDateRange";
 
 const TradeLog = () => {
     const dispatch = useDispatch();
     const page = useSelector(selectPage);
     const show = useSelector(selectShow);
     const searchTerm = useSelector(selectSearchTrades);
+    const startDate = useSelector(selectStartDate);
+    const endDate = useSelector(selectEndDate);
 
     useEffect(() => {
         dispatch(fetchTrades());
@@ -55,6 +58,17 @@ const TradeLog = () => {
     }
 
     let tradeLogData = [...data.completeTradesInfo];
+    console.log(startDate, endDate)
+
+    // filter data by date range if start date and end date are selected
+    if (startDate && endDate) {
+        tradeLogData = getFilteredDataByDateRange(
+            tradeLogData,
+            startDate,
+            endDate
+        );
+    }
+    console.log(tradeLogData)
 
     if (searchTerm) {
         tradeLogData = searchTrade(tradeLogData, searchTerm);
@@ -68,7 +82,6 @@ const TradeLog = () => {
     });
 
     // paginate data
-    console.log(page, show);
     const tradeLogDataPaginated = paginateData(tradeLogData, show, page);
 
     // helper function to change limit of trades per page
@@ -189,9 +202,8 @@ const TradeLog = () => {
                                 action={setPage}
                             />
                         </div>
-                        <div  className="p-2 text-slate-500 hover:bg-slate-100 hover:cursor-pointer">
+                        <div className="p-2 text-slate-500 hover:bg-slate-100 hover:cursor-pointer">
                             <ChevronRightIcon
-
                                 onClick={() => {
                                     if (
                                         page <

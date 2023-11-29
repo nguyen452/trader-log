@@ -1,18 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Calendar from "./Calendar";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import clsx from "clsx";
 
-const DateRangePicker = () => {
+const DateRangePicker = ({ startDateAction, endDateAction }) => {
     const [showStartCalendar, setShowStartCalendar] = useState(false);
     const [showEndCalendar, setShowEndCalendar] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [endDateError, setEndDateError] = useState(false);
     const calendarRef = useRef(null);
+    const dispatch = useDispatch();
 
     //close the calendar when user clicks outside of the calendar
+    if (new Date(startDate) > new Date(endDate)) {
+        setEndDateError(true);
+    }
     useEffect(() => {
         const handler = (e) => {
             if (
@@ -68,6 +73,8 @@ const DateRangePicker = () => {
                                 if (day < 10) day = `0${day}`;
                                 if (month < 10) month = `0${month}`;
                                 setStartDate(`${month}-${day}-${year}`);
+                                dispatch(startDateAction(`${month}-${day}-${year}`));
+                                setShowStartCalendar(false);
                             }}
                         />
                     </div>
@@ -109,8 +116,11 @@ const DateRangePicker = () => {
                                 setEndDate(`${month}-${day}-${year}`);
                                 if (selectedDate < new Date(startDate)) {
                                     setEndDateError(true);
+                                    setShowEndCalendar(false);
                                 } else {
                                     setEndDateError(false);
+                                    dispatch(endDateAction(`${month}-${day}-${year}`));
+                                    setShowEndCalendar(false);
                                 }
                             }}
                         />

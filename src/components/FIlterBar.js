@@ -1,7 +1,7 @@
 import React from "react";
 import SearchBar from "../components/common/SearchBar";
 import DateRangePicker from "./DateRangePIcker";
-
+import { setStartDate, setEndDate } from "../slice/tradeLogSlice";
 
 const FilterBar = () => {
     return (
@@ -10,7 +10,7 @@ const FilterBar = () => {
                 <SearchBar pages="trades" />
             </div>
             <div className="flex">
-                <DateRangePicker />
+                <DateRangePicker startDateAction={setStartDate} endDateAction={setEndDate} />
             </div>
         </div>
     )

@@ -44,10 +44,10 @@ const tradeLogSlice = createSlice({
             state.searchTrades = action.payload;
         },
         setStartDate: (state, action) => {
-            state.selectStartDate = action.payload;
+            state.startDate = action.payload;
         },
         setEndDate: (state, action) => {
-            state.selectEndDate = action.payload;
+            state.endDate = action.payload;
         },
         setPage: (state, action) => {
             state.page = action.payload;

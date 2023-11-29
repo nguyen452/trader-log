@@ -13,11 +13,6 @@ function Calendar({displayProfitableDays, action, test}) {
   // current date the calendar is on (default is today)
   const [currentDate, setCurrentDate] = useState(new Date());
   const data = useSelector(selectDashboardData);
-  console.log(action)
-  console.log(displayProfitableDays)
-  console.log(test)
-
-
 
   const dispatch = useDispatch();
   const selectedDate = new Date (useSelector(selectSelectedDate));
