@@ -9,8 +9,6 @@ import {
 import Root from "./pages/Root";
 import DashBoard from "./pages/DashBoard";
 import Import from "./pages/Import";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Provider } from "react-redux";
 import LandingPage from "./pages/landingPage";
 import Login from "./pages/Login";
@@ -39,9 +37,7 @@ const router = createBrowserRouter(
 const App = () => {
     return (
         <Provider store={store}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <RouterProvider router={router} />
-            </LocalizationProvider>
         </Provider>
     );
 };
