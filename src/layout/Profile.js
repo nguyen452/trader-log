@@ -2,20 +2,23 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout as logoutAction } from "../slice/authSlice";
+import { selectFirstName, selectLastName } from "../slice/authSlice";
+import { useSelector } from "react-redux";
+
 
 const Profile = () => {
     const apiURL = "http://localhost:4000";
-    const userName = "John Doe";
+    const userName = `${useSelector(selectFirstName)} ${useSelector(selectLastName)}`;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const logout = async() => {
         const response = await fetch(`${apiURL}/auth/logout`, {
             method: "POST",
+            credentials: "include"
         })
         if(response.status === 200){
             dispatch(logoutAction());
             navigate("/");
-            console.log("User is logged out");
         }
 
     }
