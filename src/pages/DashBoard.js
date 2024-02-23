@@ -22,41 +22,7 @@ import BarChartRecentPerformance from "../components/BarChartRecentPerformance";
 import AverageWinVsLossBarChart from "../components/AverageWinVsLossBarChart";
 import WelcomeBar from "../components/WelcomeBar";
 import RecentTradesOpenTrades from "../components/RecentTradesOpenTrades";
-const tradeData = [
-    {
-        ID: 1,
-        Date: "2023-10-28",
-        Side: "Buy",
-        Symbol: "AAPL",
-        Tags: ["Tech", "US"],
-        "P&L": 50,
-        Fees: 2.5,
-        Volume: 100,
-        Executions: 1,
-    },
-    {
-        id: 2,
-        date: "2023-10-27",
-        side: "Sell",
-        symbol: "MSFT",
-        Tags: ["Tech", "US"],
-        "P&L": 20,
-        Fees: 1.5,
-        Volume: 50,
-        Executions: 2,
-    },
-    {
-        id: 3,
-        date: "2023-10-26",
-        side: "Buy",
-        symbol: "GOOGL",
-        Tags: ["Tech", "US"],
-        "P&L": -10,
-        Fees: 2.0,
-        Volume: 75,
-        Executions: 1,
-    },
-];
+
 const DashBoard = () => {
     const dashboardData = useSelector(selectDashboardData);
     const selectedPeriod = useSelector(selectSelectedPeriod);

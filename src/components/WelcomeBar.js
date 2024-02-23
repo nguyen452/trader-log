@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ButtonWithDropDownMenu from "./common/ButtonWithDropDownMenu";
 import { useSelector } from "react-redux";
 import { selectSelectedPeriod, changePeriod } from "../slice/dashboardSlice";
+import { selectFirstName, selectLastName } from "../slice/authSlice";
 
 const WelcomeBar = () => {
     const selectedPeriod = useSelector(selectSelectedPeriod);
@@ -19,7 +20,7 @@ const WelcomeBar = () => {
     return (
         <div className="flex h-24 items-center container mx-auto p-4 text-3xl font-semibold text-slate-900 justify-between mt-8">
             <div className="flex flex-col space-y-4">
-                <h1>{`Welcome, User Name!`}</h1>
+                <h1>{`Welcome, ${useSelector(selectFirstName)} ${useSelector(selectLastName)} !`}</h1>
                 <h2 className="text-base text-slate-600">{`Here are your trading metrics for ${
                     getPeriodText()
                     }`}</h2>
