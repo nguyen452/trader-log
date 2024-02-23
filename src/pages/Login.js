@@ -24,8 +24,9 @@ const Login = () => {
         //post to server
         const response = await dispatch(login({ username, password }));
         if (response.payload) {
+            console.log(response.payload);
             setIsLoadingState(false);
-            navigate(`/user/${response.payload}/dashboard`);
+            navigate(`/user/${response.payload.userId}/dashboard`);
 
         } else {
             setLoginErrorState(true);

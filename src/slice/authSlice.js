@@ -16,7 +16,8 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     const data = await response.json();
     // what every is receive back from the backend
     if (data.message === 'User is authenticated.') {
-        return data.userId;
+        console.log(data)
+        return data
     } else {
         throw new Error(data.message);
     }
@@ -29,6 +30,9 @@ const authSlice = createSlice({
     initialState: {
         isAuthenticated: false,
         userId: null,
+        email: null,
+        firstName: null,
+        lastName: null,
         isLoading: false,
         hasError: false
     },
@@ -47,7 +51,10 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isAuthenticated = true;
-                state.userId = action.payload;
+                state.userId = action.payload.userId;
+                state.email = action.payload.email;
+                state.firstName = action.payload.firstName;
+                state.lastName = action.payload.lastName;
                 state.hasError = false;
             })
             .addCase(login.rejected, (state) => {
@@ -59,6 +66,9 @@ const authSlice = createSlice({
 
 export const selectIsAuthenticated = (state) => state.authenticate.isAuthenticated;
 export const selectUserId = (state) => state.authenticate.userId;
+export const selectEmail = (state) => state.authenticate.email;
+export const selectFirstName = (state) => state.authenticate.firstName;
+export const selectLastName = (state) => state.authenticate.lastName;
 
 export const { logout } = authSlice.actions;
 
