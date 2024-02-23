@@ -1,7 +1,24 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout as logoutAction } from "../slice/authSlice";
 
 const Profile = () => {
+    const apiURL = "http://localhost:4000";
     const userName = "John Doe";
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const logout = async() => {
+        const response = await fetch(`${apiURL}/auth/logout`, {
+            method: "POST",
+        })
+        if(response.status === 200){
+            dispatch(logoutAction());
+            navigate("/");
+            console.log("User is logged out");
+        }
+
+    }
     return (
         <>
           <div className="flex justify-center items-center h-14 px-4">
@@ -11,7 +28,7 @@ const Profile = () => {
                     <p className="text-sm font-medium">{userName}</p>
                 </div>
             </div>
-            <button>
+            <button onClick={logout}>
                 Logout
             </button>
          </div>
