@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
     AreaChart,
     Area,
@@ -8,10 +8,6 @@ import {
     ResponsiveContainer,
     Tooltip
 } from "recharts";
-import ButtonWithDropDownMenu from "../../components/common/ButtonWithDropDownMenu";
-import { useSelector } from "react-redux";
-import { selectSelectedPeriod, changePeriod } from "../../slice/periodSlice";
-import getFilteredDataByPeriod from "../../utils/getFilteredDataBySelectedDay";
 
 const chartStyle = {
     fontFamily: "Poppins",
@@ -21,22 +17,11 @@ const chartStyle = {
 };
 
 const Profits = ({ data }) => {
-    // const [filteredData, setFilteredData] = useState(data);
-    // const selectedPeriod = useSelector(selectSelectedPeriod);
-
-    // useEffect(() => {
-    //     if (data) {
-    //         setFilteredData(getFilteredDataByPeriod(data, selectedPeriod))
-    //     }
-    // },[data, selectedPeriod])
 
     return (
         <section className="flex flex-col bg-white font-light text-slate-900 rounded-3xl shadow-md p-4">
             <div id="title-date-container" className="my-8 ml-8">
                 <h2 className="text-xl font-semibold">Accumulated Return</h2>
-                {/* <div className="flex justify-end mr-8">
-                    <ButtonWithDropDownMenu name={selectedPeriod} list={['All time', 'Year-to-date', 'Month-to-date', 'Week-to-date']} action={changePeriod}  />
-                </div> */}
             </div>
             <ResponsiveContainer height={384}>
                 <AreaChart
