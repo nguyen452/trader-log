@@ -7,9 +7,6 @@ import {
     YAxis,
     ResponsiveContainer,
 } from "recharts";
-import {data} from "../layout/profits/Profits"
-
-// import randomDailyProfitData from "../../random_daily_profit.json";
 
 const chartStyle = {
     fontFamily: "Poppins",
@@ -18,9 +15,9 @@ const chartStyle = {
     padding: "8px",
 };
 
-const ProfitMiniAreaChart = ({ data, yAxis, xAxis, cartesianGrid }) => {
+const ProfitMiniAreaChart = ({ data, yAxis, xAxis, cartesianGrid, width, height }) => {
     return (
-        <ResponsiveContainer width={192} height={96}>
+        <ResponsiveContainer width="100%" height="100%">
             <AreaChart
                 data={data}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -32,7 +29,7 @@ const ProfitMiniAreaChart = ({ data, yAxis, xAxis, cartesianGrid }) => {
                     </linearGradient>
                 </defs>
 
-                {yAxis && <YAxis />}
+                {yAxis &&  <YAxis dataKey="Accumulated Profits" tick={{ ...chartStyle }}  tickMargin={12} stroke=" #cbd5e1"/>}
                 {xAxis && <XAxis />}
                 {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
 
