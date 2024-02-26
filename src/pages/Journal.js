@@ -1,6 +1,8 @@
 import React from "react";
 import CreateJournalCard from "../components/CreateJournalCard";
 import JournalCard from "../components/JournalCard";
+import DailyJournalEntry from "../components/DailyJournalEntry";
+
 
 const Journal = () => {
     let date = 'Thu, 10/14/2021'
@@ -15,7 +17,9 @@ const Journal = () => {
                 {/* hold trade journal */}
                 {/* paginate */}
             </div>
-
+            <div>
+                <DailyJournalEntry />
+            </div>
         </main>
     );
 };
