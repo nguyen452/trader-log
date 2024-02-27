@@ -17,7 +17,7 @@ const TextEditor = ({ value, onChange }) => {
         ],
     };
     return (
-        <ReactQuill modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={} />
+        <ReactQuill modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={value} />
     )
 }
 

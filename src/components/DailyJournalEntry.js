@@ -6,8 +6,7 @@ import TextEditor from "./common/TextEditor";
 import BlueButton from "./common/BlueButton";
 
 
-const DailyJournalEntry = ({ entry }) => {
-
+const DailyJournalEntry = ({ entry, onClose }) => {
     entry = {entry: "This is a test entry"}
     const intraDayProfitCurve = [
         {time: '0930', 'Accumulated Profits': 1000},
@@ -23,13 +22,17 @@ const DailyJournalEntry = ({ entry }) => {
             // add more testing data as needed
         ];
 
+        const closeViewNote = () => {
+            onClose(false);
+        }
+
         return (
-            <section className="flex flex-col gap-4 ">
-                <div className="flex items-center justify-between m-4 border-b-2">
+            <section className="flex flex-col gap-8 bg-white rounded-2xl p-4 ">
+                <div className="flex items-center justify-between py-2 border-b-2 mx-4">
                     <h2 className="font-medium">
                         Daily Log
                     </h2>
-                    <div>
+                    <div className="hover:cursor-pointer hover:text-slate-600" onClick={closeViewNote}>
                         <CloseIcon />
                     </div>
                 </div>
@@ -47,12 +50,14 @@ const DailyJournalEntry = ({ entry }) => {
                         </div>
                     </div>
                 </div >
-                <div className="w-full">
+                <div className="w-full p-4">
                     <TextEditor value={entry.entry} />
                 </div>
-                <button className="bg-traderBlue h-12 w-28 text-white hover:bg-blue-400 rounded-2xl">
-                    Save
-                </button>
+                <div className="flex justify-end px-4">
+                    <button className="bg-traderBlue h-12 w-28 text-white hover:bg-blue-400 rounded-2xl text-center ">
+                        Save
+                    </button>
+                </div>
             </section>
         )
     }

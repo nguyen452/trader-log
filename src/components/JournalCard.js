@@ -26,7 +26,7 @@ const tradeData = [
 
 
 
-const JournalCard = ({ date, profitLoss, totalTrades, winRate, winners, losers, volume, fees, profitFactor}) => {
+const JournalCard = ({ date, profitLoss, totalTrades, winRate, winners, losers, volume, fees, profitFactor, setIsViewNoteOpen}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const data = [
         {name1: 'Total Trades', value1: totalTrades, name2: 'Win Rate', value2: winRate},
@@ -34,6 +34,10 @@ const JournalCard = ({ date, profitLoss, totalTrades, winRate, winners, losers, 
         {name1: 'Profit and Loss', value1: volume, name2: 'Volume', value2: volume},
         {name1: 'Profit Factor', value1: profitFactor, name2: 'Fees', value2: fees},
     ]
+    const handleViewNote = () => {
+        setIsViewNoteOpen(prev => !prev);
+    }
+
     return (
         <section className="bg-white m-4 rounded-3xl">
             <div className="flex items-center justify-between px-4" >
@@ -49,7 +53,7 @@ const JournalCard = ({ date, profitLoss, totalTrades, winRate, winners, losers, 
                         "text-red-500": profitLoss < 0,
                     })}x>P&L {profitLoss}</div>
                 </div>
-                <button className="bg-traderBlue text-white flex items-center justify-center gap-1 h-10 w-40 rounded-xl px-4">
+                <button className="bg-traderBlue text-white flex items-center justify-center gap-1 h-10 w-40 rounded-xl px-4" onClick={handleViewNote}>
                     <EditNoteIcon />
                     <p>View Note</p>
                 </button>
