@@ -13,7 +13,6 @@ const RecentTradesOpenTrades = ({ recentTradeData, openTradeData }) => {
     const [recentTrades, setRecentTrades] = useState(true);
     const recentTradesPeriod = useSelector(selectRecentTradesPeriod);
     recentTradeData = filterLastTrades(recentTradeData, recentTradesPeriod);
-    console.log(recentTradeData)
 
     return (
         <div className=" w-full flex flex-col bg-white rounded-3xl shadow-md overflow-x-auto font-medium text-slate-800 p-8">

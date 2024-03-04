@@ -16,7 +16,6 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     const data = await response.json();
     // what every is receive back from the backend
     if (data.message === 'User is authenticated.') {
-        console.log(data)
         return data
     } else {
         throw new Error(data.message);

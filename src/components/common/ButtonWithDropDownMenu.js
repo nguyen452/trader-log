@@ -8,7 +8,6 @@ const ButtonWithDropDownMenu = ({ name, list, action }) => {
     const menuRef = useRef(null);
 
     const handleAction = (item) => {
-        console.log(action)
         dispatch(action(item));
         setIsMenuOpen(false);
     };
