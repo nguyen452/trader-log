@@ -3,7 +3,7 @@ import JournalDatePicker from "./JournalDatePicker";
 
 const CreateJournalCard = () => {
     return (
-        <div className="flex gap-4 p-4 items-center">
+        <div className="flex gap-4 p-4 items-center justify-end">
             <h2>
                 Create Journal Entry
             </h2>
