@@ -58,7 +58,6 @@ const TradeLog = () => {
     }
 
     let tradeLogData = [...data.completeTradesInfo];
-    console.log(startDate, endDate)
 
     // filter data by date range if start date and end date are selected
     if (startDate && endDate) {
@@ -68,7 +67,6 @@ const TradeLog = () => {
             endDate
         );
     }
-    console.log(tradeLogData)
 
     if (searchTerm) {
         tradeLogData = searchTrade(tradeLogData, searchTerm);

@@ -25,7 +25,6 @@ const TradesDataGrid = ({ tradeData }) => {
         Executions: trade.Executions,
         };
     });
-    console.log(rows);
     return (
         <div className="w-full h-96 rounded-md shadow-md bg-white">
             <DataGrid

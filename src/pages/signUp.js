@@ -33,8 +33,6 @@ const SignUp = () => {
 
         const response = await dispatch(signUp(user))
 
-        console.log(response)
-
         if (!response.error) {
             navigate("/login")
         } else {

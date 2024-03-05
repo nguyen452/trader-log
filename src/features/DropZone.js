@@ -16,7 +16,6 @@ const DropZone = () => {
         setIsLoading(true);
         const formData = new FormData();
         files.forEach((file) => formData.append("fileUploads", file));
-        console.log({formData})
         try {
             // send file to backend
             const upload = await fetch("http://localhost:4000/api/trades/import", {

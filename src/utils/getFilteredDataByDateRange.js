@@ -33,5 +33,4 @@ const fakeData = [
     { date_open: '2022-01-05', value: 500 },
 ];
 
-console.log(getFilteredDataByDateRange(fakeData, '2022-01-02', '2022-01-04'));
 export default getFilteredDataByDateRange;
