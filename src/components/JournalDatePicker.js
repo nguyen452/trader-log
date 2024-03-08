@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Calendar from "./Calendar";
 
-const JournalDatePicker = () => {
+const JournalDatePicker = ({ setDate }) => {
     const [showCalendar, setShowCalendar] = useState(false);
     const calendarRef = useRef(null);
     const [pickedDate, setPickedDate] = useState("");
+    const dispatch = useDispatch();
 
     //close the calendar when user clicks outside of the calendar
     useEffect(() => {
@@ -22,7 +24,6 @@ const JournalDatePicker = () => {
             document.removeEventListener("mousedown", handler);
         };
     });
-
     return (
         <div className="relative">
             <DateRangeIcon
@@ -44,6 +45,7 @@ const JournalDatePicker = () => {
                         ref={calendarRef}
                     >
                         <Calendar
+
                             action={(selectedDate) => {
                                 let day = selectedDate.getDate();
                                 let month = selectedDate.getMonth() + 1;
@@ -53,7 +55,7 @@ const JournalDatePicker = () => {
                                 if (month < 10) month = `0${month}`;
                                 setPickedDate(`${month}-${day}-${year}`);
                                 // write dispatch action here to update the state of
-                                // dispatch(startDateAction(`${month}-${day}-${year}`));
+                                dispatch(setDate(`${month}-${day}-${year}`));
                                 setShowCalendar(false);
                             }}
                         />

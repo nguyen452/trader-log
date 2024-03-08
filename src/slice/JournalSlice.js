@@ -4,7 +4,6 @@ import paginateData from "../utils/paginateData";
 export const fetchJournalPageData = createAsyncThunk(
     'journal/fetchJournal',
     async (_, thunkAPI) => {
-        console.log("called")
         let dates = []
         let tradeData;
         const page = thunkAPI.getState().journal.page;
@@ -32,7 +31,6 @@ export const fetchJournalPageData = createAsyncThunk(
             method: "Get",
             credentials: "include"
         });
-        console.log(response2)
         if (response2.ok) {
             const data = await response2.json();
             tradeData = data;
@@ -41,6 +39,27 @@ export const fetchJournalPageData = createAsyncThunk(
     }
 )
 
+export const createJournalEntry = createAsyncThunk(
+    'journal/createJournalEntry',
+    async ({date, entry, hasTrade},) => {
+        const response = await fetch('http://localhost:4000/api/journal/entry', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({date, entry, hasTrade})
+        })
+
+        if (response.ok) {
+            const journalEntry = await response.json()
+            const date = journalEntry.date
+            return date
+        } else {
+            throw new Error('Unable to create journal entry');
+        }
+    }
+)
 
 const journalSlice = createSlice({
     name: 'journal',
@@ -51,10 +70,14 @@ const journalSlice = createSlice({
         data: {},
         journalEntryData: null,
         page: 1,
+        createEntryDate: null
     },
     reducers: {
         changePage: (state, action) => {
             state.page = action.payload;
+        },
+        setCreateEntryDate: (state, action) => {
+            state.createEntryDate = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -71,6 +94,22 @@ const journalSlice = createSlice({
                 state.data = action.payload.tradeData;
             })
             .addCase(fetchJournalPageData.rejected, (state) => {
+                state.isLoading = false;
+                state.hasError = true;
+            })
+            // create journal entry
+            .addCase(createJournalEntry.pending, (state) => {
+                state.isLoading = true;
+                state.hasError = false;
+            })
+            .addCase(createJournalEntry.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.hasError = false;
+                const newDateToAdd = action.payload;
+                state.dates.push(newDateToAdd);
+                state.dates.sort((a, b) => new Date(b) - new Date(a))
+            })
+            .addCase(createJournalEntry.rejected, (state) => {
                 state.isLoading = false;
                 state.hasError = true;
             })
@@ -105,7 +144,8 @@ const journalSlice = createSlice({
     }
 })
 
-export const { changePage } = journalSlice.actions;
+export const { changePage, setCreateEntryDate } = journalSlice.actions;
+export const selectCreateEntryDate = state => state.journal.createEntryDate;
 export const selectJournalDates = state => state.journal.dates;
 export const selectJournalEntryData = state => state.journal.journalEntryData;
 export const selectJournalPageNumber = state => state.journal.page;

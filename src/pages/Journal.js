@@ -39,7 +39,6 @@ const Journal = () => {
         () => paginateData(dates, show, page),
         [dates, page]
     );
-
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -48,6 +47,7 @@ const Journal = () => {
         };
         fetchData();
     }, [dispatch, page]);
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -71,7 +71,6 @@ const Journal = () => {
                         calculateIntraDayProfitCurveData(
                             data[date].completeTradesInfo
                         );
-                    console.log(intraDayProfitCurveData);
                     return (
                        <>
                         <JournalCard
