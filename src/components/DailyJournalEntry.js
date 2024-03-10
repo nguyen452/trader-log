@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import DailyAreaCurve from "./DailyAreaCurve";
 import JournalCardStatBox from "./JournalCardStatBox";
 import TextEditor from "./common/TextEditor";
 import { useSelector, useDispatch } from "react-redux";
-import { selectJournalData } from "../slice/journalSlice";
+import { updateJournalEntry, getJournalEntryByDate, selectJournalEntry, setJournalEntry } from "../slice/journalModalSlice";
 import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
+import { selectJournalData } from "../slice/journalSlice";
 
 
 
 
-const DailyJournalEntry = ({ journalEntry, onClose, date }) => {
-    console.log(date)
+const DailyJournalEntry = ({ onClose, date }) => {
     const dispatch = useDispatch();
-    if (!journalEntry) {
-        journalEntry = "";
-    }
+    let journalEntryData = useSelector(selectJournalEntry);
     const journalData = useSelector(selectJournalData)[date];
+    const [ journalEntryText, setJournalEntryText ] = useState(journalEntryData);
+
+
+    useEffect(() => {
+        const fetchJournalData = async () => {
+            console.log(date)
+            await dispatch(getJournalEntryByDate(date));
+        }
+        fetchJournalData();
+    }, [dispatch, date])
+
+    useEffect(() => {
+        setJournalEntryText(journalEntryData);
+
+    }, [journalEntryData])
+
     const intraDayProfitCurve = calculateIntraDayProfitCurveData(journalData.completeTradesInfo);
     const data = [
         {name1: 'Total Trades', value1: journalData.totalTrades, name2: 'Win Rate', value2: journalData.winRate},
@@ -24,9 +38,14 @@ const DailyJournalEntry = ({ journalEntry, onClose, date }) => {
         {name1: 'Gross Profit', value1: `$ ${journalData.totalGrossProfit}`, name2: 'Gross Loss', value2: `$ ${journalData.totalGrossLoss}`},
     ]
 
-        const closeViewNote = () => {
-            dispatch(onClose());
-        }
+    const closeViewNote = () => {
+        dispatch(onClose());
+    }
+
+    const handleSave = async() => {
+        dispatch(setJournalEntry(journalEntryText));
+        await dispatch ( updateJournalEntry( { date: date, entry: journalEntryText}))
+    }
 
         return (
             <section className="flex flex-col gap-8 bg-white rounded-2xl p-4 w-2/3 text-md ">
@@ -53,10 +72,10 @@ const DailyJournalEntry = ({ journalEntry, onClose, date }) => {
                     </div>
                 </div >
                 <div className="w-full p-4">
-                    <TextEditor value={journalEntry} />
+                    <TextEditor value={journalEntryText} onChange={setJournalEntryText} />
                 </div>
                 <div className="flex justify-end px-4">
-                    <button className="bg-traderBlue h-12 w-28 text-white hover:bg-blue-400 rounded-2xl text-center ">
+                    <button className="bg-traderBlue h-12 w-28 text-white hover:bg-blue-400 rounded-2xl text-center " onClick={handleSave}>
                         Save
                     </button>
                 </div>

@@ -12,13 +12,13 @@ import {
     selectJournalData,
     selectJournalIsLoading,
     selectJournalHasError,
+    selectPaginatedDates
 } from "../slice/journalSlice";
-import { selectIsModalOpen, selectJournalEntry, selectJournalDate, openModal, closeModal, setDate} from "../slice/journalModalSlice";
+import { selectIsModalOpen, selectJournalEntry, selectJournalDate, openModal, closeModal} from "../slice/journalModalSlice";
 import Pagination from "../components/common/Pagination";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import getTotalNumberOfPage from "../utils/getTotalNumberOfPage";
-import paginateData from "../utils/paginateData";
 import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
 
 const Journal = () => {
@@ -29,16 +29,11 @@ const Journal = () => {
     const data = useSelector(selectJournalData);
     const isLoading = useSelector(selectJournalIsLoading);
     const hasError = useSelector(selectJournalHasError);
+    const paginatedDates = useSelector(selectPaginatedDates);
     //ModalSliceState
     const isModalOpen = useSelector(selectIsModalOpen);
     const journalEntry = useSelector(selectJournalEntry);
     const date = useSelector(selectJournalDate);
-
-    const paginatedDatesArray = Object.keys(data);
-    const paginatedDates = useMemo(
-        () => paginateData(dates, show, page),
-        [dates, page]
-    );
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -47,7 +42,6 @@ const Journal = () => {
         };
         fetchData();
     }, [dispatch, page]);
-
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -66,7 +60,7 @@ const Journal = () => {
                 <CreateJournalCard />
             </div>
             <div className="mt-4">
-                {paginatedDatesArray.map((date) => {
+                {paginatedDates.map((date) => {
                     const intraDayProfitCurveData =
                         calculateIntraDayProfitCurveData(
                             data[date].completeTradesInfo
@@ -93,7 +87,7 @@ const Journal = () => {
                     );
                 })}
                 <Modal open={isModalOpen}>
-                    <DailyJournalEntry onClose={closeModal} date={date} journalEntry={journalEntry} />
+                    <DailyJournalEntry onClose={closeModal} date={date} />
                 </Modal>
             </div>
             <div className="flex justify-center items-center">

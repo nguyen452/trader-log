@@ -1,7 +1,10 @@
-import ReactQuill from 'react-quill';
+import ReactQuill, {Quill} from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
+import React,  { useEffect, useRef } from 'react';
 
 const TextEditor = ({ value, onChange }) => {
+   Quill.register('modules/imageResize', ImageResize);
     const  modules  = {
         toolbar: [
             [{ font: [] }],
@@ -15,9 +18,16 @@ const TextEditor = ({ value, onChange }) => {
             ["link", "image", "video"],
             ["clean"],
         ],
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: [ "Resize", "DisplaySize" ],
+
+        },
     };
     return (
-        <ReactQuill modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={value} />
+     <div className='max-h-96 overflow-auto'>
+           <ReactQuill  modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={value} />
+     </div>
     )
 }
 

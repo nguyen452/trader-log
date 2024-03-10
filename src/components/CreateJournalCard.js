@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import JournalDatePicker from "./JournalDatePicker";
 import { useDispatch, useSelector } from "react-redux";
-import { createJournalEntry, setCreateEntryDate, selectCreateEntryDate } from "../slice/journalSlice";
+import { createJournalEntry, setCreateEntryDate, selectCreateEntryDate, fetchJournalPageData } from "../slice/journalSlice";
 
 const CreateJournalCard = () => {
     const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const CreateJournalCard = () => {
 
     const handleClick = async () => {
         await dispatch(createJournalEntry({ date: entryDate, entry: null, hasTrade: false }));
+        await dispatch (fetchJournalPageData());
     };
 
     return (

@@ -23,7 +23,6 @@ export const fetchJournalPageData = createAsyncThunk(
         }
 
         const paginatedDates = paginateData(dates, 7, page)
-        console.log(paginatedDates)
 
         const uriEncodedDates = paginatedDates.map(date => `date=${encodeURIComponent(date)}`).join("&")
 
@@ -35,13 +34,13 @@ export const fetchJournalPageData = createAsyncThunk(
             const data = await response2.json();
             tradeData = data;
         }
-        return {dates, tradeData};
+        return {dates, tradeData, paginatedDates};
     }
 )
 
 export const createJournalEntry = createAsyncThunk(
     'journal/createJournalEntry',
-    async ({date, entry, hasTrade},) => {
+    async ({date, entry, hasTrade}) => {
         const response = await fetch('http://localhost:4000/api/journal/entry', {
             method: 'POST',
             credentials: 'include',
@@ -61,6 +60,8 @@ export const createJournalEntry = createAsyncThunk(
     }
 )
 
+
+
 const journalSlice = createSlice({
     name: 'journal',
     initialState: {
@@ -68,8 +69,8 @@ const journalSlice = createSlice({
         hasError: false,
         dates: [],
         data: {},
-        journalEntryData: null,
         page: 1,
+        paginatedDates: [],
         createEntryDate: null
     },
     reducers: {
@@ -92,6 +93,7 @@ const journalSlice = createSlice({
                 state.hasError = false;
                 state.dates = action.payload.dates;
                 state.data = action.payload.tradeData;
+                state.paginatedDates = action.payload.paginatedDates;
             })
             .addCase(fetchJournalPageData.rejected, (state) => {
                 state.isLoading = false;
@@ -113,34 +115,7 @@ const journalSlice = createSlice({
                 state.isLoading = false;
                 state.hasError = true;
             })
-            // fetch journal entry by date
-            // .addCase(fetchJournalEntryByDate.pending, (state) => {
-            //     state.isLoading = true;
-            //     state.hasError = false;
-            // })
-            // .addCase(fetchJournalEntryByDate.fulfilled, (state, action) => {
-            //     state.isLoading = false;
-            //     state.hasError = false;
-            //     state.journalEntryData = action.payload;
-            // })
-            // .addCase(fetchJournalEntryByDate.rejected, (state) => {
-            //     state.isLoading = false;
-            //     state.hasError = true;
-            // })
-            // fetch journal trades stats
-            // .addCase(fetchJournalTradesStats.pending, (state) => {
-            //     state.isLoading = true;
-            //     state.hasError = false;
-            // })
-            // .addCase(fetchJournalTradesStats.fulfilled, (state, action) => {
-            //     state.isLoading = false;
-            //     state.hasError = false;
-            //     state.stats = action.payload;
-            // })
-            // .addCase(fetchJournalTradesStats.rejected, (state) => {
-            //     state.isLoading = false;
-            //     state.hasError = true;
-            // })
+
     }
 })
 
@@ -152,4 +127,5 @@ export const selectJournalPageNumber = state => state.journal.page;
 export const selectJournalData = state => state.journal.data;
 export const selectJournalIsLoading = state => state.journal.isLoading;
 export const selectJournalHasError = state => state.journal.hasError;
+export const selectPaginatedDates = state => state.journal.paginatedDates;
 export default journalSlice.reducer;
