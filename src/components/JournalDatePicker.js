@@ -58,6 +58,7 @@ const JournalDatePicker = ({ setDate }) => {
                                 dispatch(setDate(`${month}-${day}-${year}`));
                                 setShowCalendar(false);
                             }}
+                            switchMonthButton={true}
                         />
                     </div>
                 )}

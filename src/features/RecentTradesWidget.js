@@ -18,7 +18,7 @@ const RecentTradesWidget = () => {
 
     return (
         <div className="flex flex-col md:flex-row items-center bg-white w-full h-full md:gap-4 rounded-3xl shadow-md p-4">
-        <Calendar displayProfitableDays={true} action={function(){'test'}} test='test' />
+        <Calendar displayProfitableDays={true} switchMonthButton={true}/>
             <div className="w-full h-full">
                 <h2 className="font-bold text-slate-800 text-xl p-8">
                     {selectedDate.toLocaleDateString("en-US", {

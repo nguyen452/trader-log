@@ -76,6 +76,7 @@ const DateRangePicker = ({ startDateAction, endDateAction }) => {
                                 dispatch(startDateAction(`${month}-${day}-${year}`));
                                 setShowStartCalendar(false);
                             }}
+                            switchMonthButton={true}
                         />
                     </div>
                 )}
@@ -123,6 +124,7 @@ const DateRangePicker = ({ startDateAction, endDateAction }) => {
                                     setShowEndCalendar(false);
                                 }
                             }}
+                            switchMonthButton={true}
                         />
                     </div>
                 )}
