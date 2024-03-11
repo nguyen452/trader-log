@@ -17,6 +17,7 @@ import SignUp from "./pages/signUp.js";
 import SignedIn from "./pages/SignedIn.js";
 import TradeLog from "./pages/TradeLog.js";
 import Journal from "./pages/Journal.js";
+import CalendarPage from "./pages/CalendarPage.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
                 <Route path="import" element={<Import />} />
                 <Route path="trade-log" element={<TradeLog />} />
                 <Route path="journal" element={<Journal />} />
+                <Route path="calendar" element={<CalendarPage />} />
             </Route>
         </>
     )
