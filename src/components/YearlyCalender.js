@@ -4,16 +4,17 @@ import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDashboardData } from "../slice/dashboardSlice";
 import monthName from "../utils/convertMonthName";
+import { openModal, selectTradeData } from "../slice/calendarModalSlice";
 
 
 const YearlyCalender = ({ displayProfitableDays, year }) => {
+    const dispatch = useDispatch();
     const data = useSelector(selectDashboardData);
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     // helper function to change from month number to month name
 
     //helper function to get the days to fully populate the calendar
     const getDaystoPopulateCalendar = (year, month) => {
-        console.log(year, month);
         const dayOfWeekOfTheFirst = new Date(year, month, 1).getDay(); // return a value of 0-6 representing the day of the week of the first day of the month
         let startDayCount = new Date(
             year,
@@ -56,7 +57,7 @@ const YearlyCalender = ({ displayProfitableDays, year }) => {
     };
 
     const handleViewMonth = (year, month) => {
-        console.log(year, month);
+        dispatch(openModal({ year, month }));
     }
 
     return (
@@ -72,7 +73,7 @@ const YearlyCalender = ({ displayProfitableDays, year }) => {
                             {/* open month button*/}
                             <button
                                 className="bg-traderBlue text-white flex items-center justify-center gap-1 h-8 w-40 rounded-xl px-4"
-                                // onClick={}
+                                onClick={() => handleViewMonth(year, month)}
                             >
                                 <PageviewIcon />
                                 <p>View Month</p>
@@ -91,7 +92,7 @@ const YearlyCalender = ({ displayProfitableDays, year }) => {
                         {/* Calendar Days */}
                         <div className="grid grid-cols-7 border border-slate-100 font-light p-0.5">
                             {/* get days to to fully populate the calendar */}
-                                {console.log(getDaystoPopulateCalendar(year, month))}
+
                             {getDaystoPopulateCalendar(
                                 year,
                                 month
