@@ -1,14 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import YearlyCalender from "../components/YearlyCalender";
 import clsx from "clsx";
 import MainCalendar from "../components/MainCalendar";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    fetchCalendarYear,
+    selectYears,
+    setSelectedMonth,
+    setSelectedYear,
+    selectSelectedMonth,
+    selectSelectedYear,
+    selectIsLoading,
+    selectHasError,
+} from "../slice/calendarSlice";
+import Modal from "../components/common/Modal";
+import { selectIsOpen, selectMonth, selectYear } from "../slice/calendarModalSlice";
+
+
+
 
 const CalendarPage = () => {
-    // data to test the page
-    console.log();
-    const [month, setMonth] = useState(new Date().getMonth());
-    const [selectYear, setSelectYear] = useState(new Date().getFullYear());
-    const years = [2021, 2022, 2023, 2024];
+    const isModalOpen = useSelector(selectIsOpen);
+    const selectedMonth = useSelector(selectMonth);
+    const selectedYear = useSelector(selectSelectedYear);
+    const years = useSelector(selectYears);
+
+    const isLoading = useSelector(selectIsLoading);
+    const hasError = useSelector(selectHasError);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await dispatch(fetchCalendarYear());
+        };
+        fetchData();
+    }, [dispatch]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (hasError) {
+        return <div>Unable to fetch data</div>;
+    }
+
+    if (years.length === 0) {
+        return <div>No data available</div>;
+    }
+    if (years.length > 0) {
+        dispatch(setSelectedYear(years[years.length - 1]));
+    }
+
+
+
     return (
         <main className="flex flex-col gap-4 p-4">
             <section className="flex gap-6 justify-center items-center ">
@@ -21,12 +64,13 @@ const CalendarPage = () => {
                                 className={clsx({
                                     "hover:cursor-pointer": true,
                                     // not selected
-                                    "text-slate-800": year !== selectYear,
+                                    "text-slate-800": year !== selectedYear,
                                     // selected
-                                    "text-blue-500 font-semibold border-b-4 border-blue-500": year === selectYear,
+                                    "text-blue-500 font-semibold border-b-4 border-blue-500":
+                                        year === selectedYear,
                                 })}
                                 onClick={() => {
-                                    setSelectYear(year);
+                                    setSelectedYear(year);
                                 }}
                             >
                                 {year}
@@ -35,11 +79,16 @@ const CalendarPage = () => {
                     })}
                 </ul>
             </section>
-            <section className=" w-3/4 mx-auto">
-                <MainCalendar month={month} year={selectYear} />
-            </section>
+            <Modal
+                open={isModalOpen}
+            >
+                  <MainCalendar month={selectedMonth} year={selectedYear} displayProfitableDays={true} />
+            </Modal>
             <section className=" lg:container lg:mx-auto">
-                <YearlyCalender year={selectYear} displayProfitableDays={true} />
+                <YearlyCalender
+                    year={selectedYear}
+                    displayProfitableDays={true}
+                />
             </section>
         </main>
     );
