@@ -14,13 +14,13 @@ import { selectJournalData } from "../slice/journalSlice";
 const DailyJournalEntry = ({ onClose, date }) => {
     const dispatch = useDispatch();
     let journalEntryData = useSelector(selectJournalEntry);
+    console.log(date)
     const journalData = useSelector(selectJournalData)[date];
     const [ journalEntryText, setJournalEntryText ] = useState(journalEntryData);
 
 
     useEffect(() => {
         const fetchJournalData = async () => {
-            console.log(date)
             await dispatch(getJournalEntryByDate(date));
         }
         fetchJournalData();

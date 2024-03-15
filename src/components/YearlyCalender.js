@@ -4,12 +4,13 @@ import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDashboardData } from "../slice/dashboardSlice";
 import monthName from "../utils/convertMonthName";
-import { openModal, selectTradeData } from "../slice/calendarModalSlice";
+import { selectTradeData } from "../slice/calendarSlice";
+import { openModal } from "../slice/calendarModalSlice";
 
 
 const YearlyCalender = ({ displayProfitableDays, year }) => {
     const dispatch = useDispatch();
-    const data = useSelector(selectDashboardData);
+    const data = useSelector(selectTradeData);
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     // helper function to change from month number to month name
 

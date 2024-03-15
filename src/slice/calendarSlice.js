@@ -16,6 +16,23 @@ export const fetchCalendarYear = createAsyncThunk(
     }
 );
 
+export const fetchCalendarYearTradeData = createAsyncThunk(
+    'calendar/fetchCalendarYearTradeData',
+    async ({ year, month }) => {
+        let tradeData;
+        const response = await fetch(`http://localhost:4000/api/calendar/tradesData?year=${year}&month=${month}`, {
+            method: "Get",
+            credentials: "include"
+        });
+        if (response.ok) {
+            const data = await response.json();
+            tradeData = data;
+        }
+        return tradeData;
+
+    }
+)
+
 
 const calendarSlice = createSlice({
     name: 'calendar',
@@ -25,7 +42,8 @@ const calendarSlice = createSlice({
         selectedDate: new Date(),
         selectedMonth: null,
         selectedYear: null,
-        years: [new Date().getFullYear()]
+        years: [new Date().getFullYear()],
+        tradeData: {profitsPerDay: {}, getNumberOfTradesPerDay: {}}
 
     },
     reducers: {
@@ -41,6 +59,7 @@ const calendarSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            //fetchCalendarYear
             .addCase(fetchCalendarYear.pending, (state) => {
                 state.isLoading = true;
                 state.hasError = false;
@@ -48,11 +67,25 @@ const calendarSlice = createSlice({
             .addCase(fetchCalendarYear.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.years =  action.payload;
+                state.selectedYear = action.payload[action.payload.length - 1];
             })
             .addCase(fetchCalendarYear.rejected, (state) => {
                 state.isLoading = false;
                 state.hasError = true;
-            });
+            })
+            //fetchCalendarYearTradeData
+            .addCase(fetchCalendarYearTradeData.pending, (state) => {
+                state.isLoading = true;
+                state.hasError = false;
+            })
+            .addCase(fetchCalendarYearTradeData.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.tradeData = action.payload;
+            })
+            .addCase(fetchCalendarYearTradeData.rejected, (state) => {
+                state.isLoading = false;
+                state.hasError = true;
+            })
     }
 });
 
@@ -63,4 +96,5 @@ export const selectSelectedDate = state => state.calendar.selectedDate;
 export const selectYears = state => state.calendar.years;
 export const selectSelectedMonth = state => state.calendar.selectedMonth;
 export const selectSelectedYear = state => state.calendar.selectedYear;
+export const selectTradeData = state => state.calendar.tradeData;
 export default calendarSlice.reducer;
