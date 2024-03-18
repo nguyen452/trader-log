@@ -7,21 +7,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateJournalEntry, getJournalEntryByDate, selectJournalEntry, setJournalEntry } from "../slice/journalModalSlice";
 import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
 import { selectJournalData } from "../slice/journalSlice";
+import { getTradeDataByDate } from "../slice/calendarModalSlice";
 
 
 
 
-const DailyJournalEntry = ({ onClose, date }) => {
+const DailyJournalEntry = ({ onClose, date, journalData }) => {
     const dispatch = useDispatch();
     let journalEntryData = useSelector(selectJournalEntry);
-    console.log(date)
-    const journalData = useSelector(selectJournalData)[date];
     const [ journalEntryText, setJournalEntryText ] = useState(journalEntryData);
 
 
     useEffect(() => {
         const fetchJournalData = async () => {
             await dispatch(getJournalEntryByDate(date));
+            await dispatch(getTradeDataByDate(date))
         }
         fetchJournalData();
     }, [dispatch, date])
@@ -48,7 +48,7 @@ const DailyJournalEntry = ({ onClose, date }) => {
     }
 
         return (
-            <section className="flex flex-col gap-8 bg-white rounded-2xl p-4 w-2/3 text-md ">
+            <section className="flex flex-col gap-8 bg-white rounded-2xl p-4 w-2/3 h-2/3 text-md  ">
                 <div className="flex items-center justify-between py-2 border-b-2 mx-4">
                     <h2 className="font-medium">
                         Daily Log
@@ -71,7 +71,7 @@ const DailyJournalEntry = ({ onClose, date }) => {
                         </div>
                     </div>
                 </div >
-                <div className="w-full p-4">
+                <div className="w-full h-2/3 p-4">
                     <TextEditor value={journalEntryText} onChange={setJournalEntryText} />
                 </div>
                 <div className="flex justify-end px-4">

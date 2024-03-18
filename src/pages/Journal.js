@@ -35,6 +35,7 @@ const Journal = () => {
     const journalEntry = useSelector(selectJournalEntry);
     const date = useSelector(selectJournalDate);
     const dispatch = useDispatch();
+    const journalData = useSelector(selectJournalData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,7 +88,7 @@ const Journal = () => {
                     );
                 })}
                 <Modal open={isModalOpen}>
-                    <DailyJournalEntry onClose={closeModal} date={date} />
+                    <DailyJournalEntry onClose={closeModal} date={date} journalData={journalData[date]}/>
                 </Modal>
             </div>
             <div className="flex justify-center items-center">
