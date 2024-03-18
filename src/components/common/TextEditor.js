@@ -25,8 +25,8 @@ const TextEditor = ({ value, onChange }) => {
         },
     };
     return (
-     <div className='max-h-96 overflow-auto'>
-           <ReactQuill  modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={value} />
+     <div style={{height: '100%'}}>
+           <ReactQuill  modules={modules} theme="snow" placeholder='Enter you journal log here' onChange={onChange} value={value} style={{height:'100%', width: '100%'}} />
      </div>
     )
 }
