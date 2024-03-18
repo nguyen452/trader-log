@@ -5,7 +5,7 @@ const TableBody = ({ data }) => {
     return (
         <tbody>
             {/* destructure tradeId from data  */}
-            {data.map(({ trade_Id, ...rowItem }, index) => {
+            {data.map(({ trade_Id, id, ...rowItem }, index) => {
                 return (
                     <tr
                         className={clsx({
