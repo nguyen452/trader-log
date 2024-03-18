@@ -7,6 +7,7 @@ import tradeLogReducer from '../slice/tradeLogSlice';
 import journalReducer from '../slice/journalSlice';
 import journalModalReducer from '../slice/journalModalSlice';
 import calendarModalReducer from '../slice/calendarModalSlice';
+import tradesReducer from '../slice/tradesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     journal: journalReducer,
     journalModal: journalModalReducer,
     calendarModal: calendarModalReducer,
+    trades: tradesReducer,
   },
 });
