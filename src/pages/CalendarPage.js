@@ -19,21 +19,28 @@ import {
     selectDateSelected,
     selectIsOpen,
     selectMonth,
-    selectYear,
+    selectTradeDataByDate,
+    selectIsDateModalOpen,
 } from "../slice/calendarModalSlice";
 
-import { selectIsModalOpen as selectIsJournalModalOpen, closeModal as closeJournalModal } from "../slice/journalModalSlice";
-import DailyJournalEntry from "../components/DailyJournalEntry";
+import {
+    selectIsModalOpen as selectIsJournalModalOpen,
+    closeModal as closeJournalModal,
+} from "../slice/journalModalSlice";
+import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
+import DatesTradesInfoCard from "../components/DateTradesInfoCard";
 const CalendarPage = () => {
     const isModalOpen = useSelector(selectIsOpen);
     const isJournalModalOpen = useSelector(selectIsJournalModalOpen);
     const selectedMonth = useSelector(selectMonth);
     const selectedYear = useSelector(selectSelectedYear);
     const years = useSelector(selectYears);
-    const date = useSelector(selectDateSelected)
+    const date = useSelector(selectDateSelected);
     const isLoading = useSelector(selectIsLoading);
     const hasError = useSelector(selectHasError);
     const dispatch = useDispatch();
+    const tradeDataByDate = useSelector(selectTradeDataByDate);
+    const isDateModalOpen = useSelector(selectIsDateModalOpen);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,7 +51,9 @@ const CalendarPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-               await dispatch(fetchCalendarYearTradeData({ year: selectedYear, month: null}));
+            await dispatch(
+                fetchCalendarYearTradeData({ year: selectedYear, month: null })
+            );
         };
         fetchData();
     }, [dispatch, selectedYear]);
@@ -90,8 +99,24 @@ const CalendarPage = () => {
                         displayProfitableDays={true}
                     />
                 </Modal>
-                <Modal open={isJournalModalOpen}>
-                    <DailyJournalEntry onClose={closeJournalModal} date={date} />
+                <Modal open={isDateModalOpen}>
+                    <DatesTradesInfoCard
+                        key={date}
+                        date={date}
+                        totalTrades={tradeDataByDate.totalTrades}
+                        winRate={tradeDataByDate.winRate}
+                        winners={tradeDataByDate.totalWinningTrades}
+                        losers={tradeDataByDate.totalLosingTrades}
+                        biggestWin={tradeDataByDate.largestWin}
+                        biggestLoss={tradeDataByDate.largestLoss}
+                        totalGrossProfit={tradeDataByDate.totalGrossProfit}
+                        totalGrossLoss={tradeDataByDate.totalGrossLoss}
+                        profitLoss={tradeDataByDate.totalProfit}
+                        intraDayProfitCurve={
+                            calculateIntraDayProfitCurveData(tradeDataByDate.completeTradesInfo)
+                        }
+                        dailyTradesData={tradeDataByDate.completeTradesInfo}
+                    />
                 </Modal>
                 <section className=" lg:container lg:mx-auto">
                     <YearlyCalender

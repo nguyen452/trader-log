@@ -65,7 +65,7 @@ const YearlyCalender = ({ displayProfitableDays, year }) => {
         <div className="grid grid-cols-3 gap-8 place-items-center">
             {months.map((month) => {
                 return (
-                    <div className="bg-white rounded aspect-square container p-4 max-w-md">
+                    <div className="bg-white rounded-xl aspect-square container p-4 max-w-md shadow-md">
                         <div className="flex justify-between items-center py-2">
                             {/* Calendar Header */}
                             <h1 className="text-md font-semibold">

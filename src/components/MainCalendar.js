@@ -9,13 +9,15 @@ import {
     selectIsLoading,
     selectHasError,
     selectMonthProfit,
-    setDate as setCalendarSelectedDate
+    setDate as setCalendarSelectedDate,
+    getTradeDataByDate,
+    openDateModal
 } from "../slice/calendarModalSlice";
 import isDayProfitable from "../utils/isDayProfitable";
 import clsx from "clsx";
 import getProfitForDay from "../utils/getProfitForDay";
 import getNumberOfTradesPerDay from "../utils/getNumberTradePerDay";
-import { openModal, setDate } from "../slice/journalModalSlice";
+
 
 const MainCalendar = ({ year, month, displayProfitableDays }) => {
     const dispatch = useDispatch();
@@ -36,14 +38,13 @@ const MainCalendar = ({ year, month, displayProfitableDays }) => {
         dispatch(closeModal());
     };
 
-    const handleOpenJournalModal = (date) => {
-        handleCloseModal();
+    const handleOpenDateModal = async (date) => {
         //convert date to iso string
         date = new Date(date).toISOString().slice(0, 10)
-        console.log(date)
-        dispatch(setDate(date))
+
         dispatch(setCalendarSelectedDate(date));
-        dispatch(openModal());
+        await dispatch(getTradeDataByDate(date));
+        dispatch(openDateModal());
 
     }
 
@@ -158,7 +159,7 @@ const MainCalendar = ({ year, month, displayProfitableDays }) => {
                                     )}
                                     key={index}
                                     onClick={() => {
-                                        handleOpenJournalModal(currentDate);
+                                        handleOpenDateModal(currentDate);
                                     }}
                                 >
                                     <p
