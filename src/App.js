@@ -34,7 +34,8 @@ const router = createBrowserRouter(
                 <Route path="trade-log" element={<TradeLog />} />
                 <Route path="journal" element={<Journal />} />
                 <Route path="calendar" element={<CalendarPage />} />
-                <Route path="reports" element={<Trade />} />
+                {/* <Route path="reports" element={<Trade />} /> */}
+                <Route path="trade/:tradeId" element={<Trade />} />
             </Route>
         </>
     )

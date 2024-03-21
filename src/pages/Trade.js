@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TradingViewCandleStickChart from "../components/common/TradingViewCandleStickChart";
 import Table from "../components/Table";
 import formatDate from "../utils/formatDates";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTradeData } from "../slice/tradesSlice"
+import {
+    selectTradeData,
+    selectTradeDataLoading,
+    selectTradeDataError,
+} from "../slice/tradesSlice";
 
 const data = [
     {
@@ -77,29 +85,55 @@ const data = [
 ];
 
 const Trade = () => {
-    return (
-        <main className="container mx-auto w-full">
-            <div className="flex flex-col gap-4 p-4">
-                <section className="flex justify-between items-center">
-                    <div className="text-xl font-semibold flex gap-8 ">
-                        <h1>AAPL</h1>
-                        <h2 className="font-medium">{formatDate("2023-01-01")}</h2>
-                    </div>
-                    <div className="flex gap-8 items-center text-xl">
-                        <h3>P&L</h3>
-                        <h3>Shares Traded: 100</h3>
-                    </div>
-                </section>
-                <section className="grow bg-white p-4 rounded-xl shadow-md">
-                    <h2 className="font-medium text-xl mb-4 ">Executions</h2>
-                    <Table data={data} />
-                </section>
-                <div className="w-full h-96 p-4 rounded-xl shadow-md bg-white">
-                <TradingViewCandleStickChart />
-            </div>
-            </div>
+    const { TradeId } = useParams();
+    const dispatch = useDispatch();
+    const tradeData = useSelector(selectTradeData);
+    const isLoading = useSelector(selectTradeDataLoading);
+    const hasError = useSelector(selectTradeDataError);
 
-        </main>
-    );
+    useEffect(() => {
+        const fetchData = async () => {
+            await dispatch(fetchTradeData({ TradeId }));
+        };
+        fetchData();
+    });
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    } else if (hasError) {
+        return <div>Something went wrong...</div>;
+    } else {
+        const date = tradeData.trade.date_close;
+        const symbol = tradeData.trade.symbol;
+        const profitLoss = tradeData.trade.profit;
+        const sharesTraded = tradeData.totalSharesTraded;
+        return (
+            <main className="container mx-auto w-full">
+                <div className="flex flex-col gap-4 p-4">
+                    <section className="flex justify-between items-center">
+                        <div className="text-xl font-semibold flex gap-8 ">
+                            <h1>{symbol}</h1>
+                            <h2 className="font-medium">
+                                {formatDate(date)}
+                            </h2>
+                        </div>
+                        <div className="flex gap-8 items-center text-xl">
+                            <h3>P&L {profitLoss}</h3>
+                            <h3>Shares Traded: {sharesTraded}</h3>
+                        </div>
+                    </section>
+                    <section className="grow bg-white p-4 rounded-xl shadow-md">
+                        <h2 className="font-medium text-xl mb-4 ">
+                            Executions
+                        </h2>
+                        <Table data={data} />
+                    </section>
+                    <div className="w-full h-96 p-4 rounded-xl shadow-md bg-white">
+                        <TradingViewCandleStickChart />
+                    </div>
+                </div>
+            </main>
+        );
+    }
 };
 export default Trade;
