@@ -3,7 +3,7 @@ import clsx from "clsx";
 import TableHead from "./common/TableHead";
 import TableBody from "./common/TableBody";
 
-const Table = ({ data, rowPerPage }) => {
+const Table = ({ data, rowPerPage, isRowClickable }) => {
     if (!data) {
         return <div>Loading...</div>;
     } else if (data.length === 0) {
@@ -27,7 +27,7 @@ const Table = ({ data, rowPerPage }) => {
                 )}
             >
             <TableHead data={data} />
-            <TableBody data={data} />
+            <TableBody data={data} isRowClickable={isRowClickable} />
             </table>
     );
 };
