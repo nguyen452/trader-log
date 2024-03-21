@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-const TableBody = ({ data }) => {
+const TableBody = ({ data, isRowClickable }) => {
     return (
         <tbody>
             {/* destructure tradeId from data  */}
