@@ -13,6 +13,8 @@ export const fetchTrades = createAsyncThunk(
         if (response.ok) {
             const data = await response.json();
             return data.tradingPerformanceMetrics;
+        } else if (response.status === 401) {
+            throw new Error('Unauthorized');
         } else {
             throw new Error('Unable to fetch trades');
         }
@@ -32,6 +34,7 @@ const tradeLogSlice = createSlice({
         data: null,
         isLoading: false,
         hasError: false,
+        errorMessage: '',
     },
     reducers: {
         setSelectedTrade: (state, action) => {
@@ -67,8 +70,9 @@ const tradeLogSlice = createSlice({
                 state.hasError = false;
                 state.data = action.payload;
             })
-            .addCase(fetchTrades.rejected, (state) => {
+            .addCase(fetchTrades.rejected, (state, action) => {
                 state.isLoading = false;
+                state.errorMessage = action.error.message;
                 state.hasError = true;
             });
     }
@@ -85,5 +89,6 @@ export const selectShow = state => state.tradeLog.show;
 export const selectTrades = state => state.tradeLog.data;
 export const selectTradesIsLoading = state => state.tradeLog.isLoading;
 export const selectTradesHasError = state => state.tradeLog.hasError;
+export const selectErrorMessage = state => state.tradeLog.errorMessage;
 
 export default tradeLogSlice.reducer;

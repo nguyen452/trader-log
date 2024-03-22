@@ -18,8 +18,10 @@ export const fetchDashboard = createAsyncThunk(
         if (response.ok) {
             const data = await response.json();
             return data.tradingPerformanceMetrics;
+        } else if (response.status === 401) {
+            throw new Error("Unauthorized");
         } else {
-            throw new Error("Unable to fetch dashboard data");
+            throw new Error("Server error");
         }
     }
 );
@@ -29,6 +31,7 @@ const dashboardSlice = createSlice({
     initialState: {
         isLoading: false,
         hasError: false,
+        errorMessage: "",
         data: null,
         selectedPeriod: "All time",
         recentTradesPeriod: "Last 10 trades",
@@ -58,8 +61,9 @@ const dashboardSlice = createSlice({
                 state.data = action.payload;
                 state.data.filteredTradeByDay = getFilteredDataBySelectedDay(state.data.completeTradesInfo, new Date(currentYear, currentMonth, currentDate))
             })
-            .addCase(fetchDashboard.rejected, (state) => {
+            .addCase(fetchDashboard.rejected, (state, action) => {
                 state.isLoading = false;
+                state.errorMessage = action.error.message;
                 state.hasError = true;
             });
     },
@@ -71,5 +75,6 @@ export const selectDashboardHasError = (state) => state.dashboard.hasError;
 export const selectSelectedPeriod = (state) => state.dashboard.selectedPeriod;
 export const selectFilteredTradeByDay = (state) => state.dashboard.data.filteredTradeByDay;
 export const selectRecentTradesPeriod = (state) => state.dashboard.recentTradesPeriod;
+export const selectErrorMessage = (state) => state.dashboard.errorMessage;
 export const { changePeriod ,filteredBySelectedDate, changeRecentTradesPeriod } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

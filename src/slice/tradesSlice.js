@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchTradeData = createAsyncThunk(
     'trades/fetchTradeData',
-    async (id, thunkAPI) => {
+    async (id) => {
         let tradeData;
         let tradingViewData;
 
@@ -12,6 +12,8 @@ export const fetchTradeData = createAsyncThunk(
         });
         if (response.ok) {
             tradeData = await response.json();
+        } else if (response.status === 401) {
+            throw new Error('Unauthorized');
         } else {
             throw new Error('Unable to fetch trade data');
         }
@@ -55,6 +57,7 @@ const tradesSlice = createSlice({
     initialState: {
         isLoading: false,
         hasError: false,
+        errorMessage: "",
         tradeData: {trade: {date_close: "", symbol: "", profit: 0}, totalSharesTraded: 0, executions: [{}]},
         tradingViewData:[],
     },
@@ -70,8 +73,9 @@ const tradesSlice = createSlice({
             state.tradeData = action.payload.tradeData;
             state.tradingViewData = action.payload.tradingViewData;
         });
-        builder.addCase(fetchTradeData.rejected, (state) => {
+        builder.addCase(fetchTradeData.rejected, (state, action) => {
             state.isLoading = false;
+            state.errorMessage = action.error.message;
             state.hasError = true;
         });
     }
@@ -82,3 +86,4 @@ export const selectTradeData = (state) => state.trades.tradeData;
 export const selectTradeDataLoading = (state) => state.trades.isLoading;
 export const selectTradeDataError = (state) => state.trades.hasError;
 export const selectTradingViewData = (state) => state.trades.tradingViewData;
+export const selectErrorMessage = (state) => state.trades.errorMessage;
