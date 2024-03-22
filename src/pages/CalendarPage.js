@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import YearlyCalender from "../components/YearlyCalender";
 import clsx from "clsx";
 import MainCalendar from "../components/MainCalendar";
@@ -6,12 +6,11 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     fetchCalendarYear,
     selectYears,
-    setSelectedMonth,
     setSelectedYear,
-    selectSelectedMonth,
     selectSelectedYear,
     selectIsLoading,
     selectHasError,
+    selectErrorMessage,
     fetchCalendarYearTradeData,
 } from "../slice/calendarSlice";
 import Modal from "../components/common/Modal";
@@ -23,15 +22,11 @@ import {
     selectIsDateModalOpen,
 } from "../slice/calendarModalSlice";
 
-import {
-    selectIsModalOpen as selectIsJournalModalOpen,
-    closeModal as closeJournalModal,
-} from "../slice/journalModalSlice";
 import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
 import DatesTradesInfoCard from "../components/DateTradesInfoCard";
+import SessionExpired from "../components/SessionExpired";
 const CalendarPage = () => {
     const isModalOpen = useSelector(selectIsOpen);
-    const isJournalModalOpen = useSelector(selectIsJournalModalOpen);
     const selectedMonth = useSelector(selectMonth);
     const selectedYear = useSelector(selectSelectedYear);
     const years = useSelector(selectYears);
@@ -41,6 +36,7 @@ const CalendarPage = () => {
     const dispatch = useDispatch();
     const tradeDataByDate = useSelector(selectTradeDataByDate);
     const isDateModalOpen = useSelector(selectIsDateModalOpen);
+    const errorMessage = useSelector(selectErrorMessage);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,8 +56,14 @@ const CalendarPage = () => {
 
     if (isLoading) {
         return <div>Loading...</div>;
-    } else if (hasError) {
+    } else if (hasError && errorMessage === "Server error") {
         return <div>Unable to fetch data</div>;
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        );
     } else if (years.length === 0) {
         return <div>No data available</div>;
     } else {
@@ -112,9 +114,9 @@ const CalendarPage = () => {
                         totalGrossProfit={tradeDataByDate.totalGrossProfit}
                         totalGrossLoss={tradeDataByDate.totalGrossLoss}
                         profitLoss={tradeDataByDate.totalProfit}
-                        intraDayProfitCurve={
-                            calculateIntraDayProfitCurveData(tradeDataByDate.completeTradesInfo)
-                        }
+                        intraDayProfitCurve={calculateIntraDayProfitCurveData(
+                            tradeDataByDate.completeTradesInfo
+                        )}
                         dailyTradesData={tradeDataByDate.completeTradesInfo}
                     />
                 </Modal>

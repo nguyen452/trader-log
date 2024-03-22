@@ -12,7 +12,8 @@ import {
     selectJournalData,
     selectJournalIsLoading,
     selectJournalHasError,
-    selectPaginatedDates
+    selectPaginatedDates,
+    selectErrorMessage,
 } from "../slice/journalSlice";
 import { selectIsModalOpen, selectJournalEntry, selectJournalDate, openModal, closeModal} from "../slice/journalModalSlice";
 import Pagination from "../components/common/Pagination";
@@ -20,6 +21,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import getTotalNumberOfPage from "../utils/getTotalNumberOfPage";
 import calculateIntraDayProfitCurveData from "../utils/calculateIntraDayProfitCurveData";
+import SessionExpired from "../components/SessionExpired";
 
 const Journal = () => {
     //journalSliceState
@@ -29,10 +31,10 @@ const Journal = () => {
     const data = useSelector(selectJournalData);
     const isLoading = useSelector(selectJournalIsLoading);
     const hasError = useSelector(selectJournalHasError);
+    const errorMessage = useSelector(selectErrorMessage);
     const paginatedDates = useSelector(selectPaginatedDates);
     //ModalSliceState
     const isModalOpen = useSelector(selectIsModalOpen);
-    const journalEntry = useSelector(selectJournalEntry);
     const date = useSelector(selectJournalDate);
     const dispatch = useDispatch();
     const journalData = useSelector(selectJournalData);
@@ -48,8 +50,14 @@ const Journal = () => {
         return <div>Loading...</div>;
     } else if (dates.length === 0) {
         return <div>No data available</div>;
-    } else if (hasError) {
+    } else if (hasError && errorMessage === "Server error") {
         return <div>Something went wrong...</div>;
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        );
     } else if (paginatedDates.length === 0) {
         return <div>No data available</div>;
     } else if (!data) {

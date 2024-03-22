@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import clsx from "clsx";
 import {
     fetchDashboard,
-    changePeriod,
-    filteredBySelectedPeriod,
     selectDashboardData,
     selectSelectedPeriod,
     selectDashboardIsLoading,
     selectDashboardHasError,
+    selectErrorMessage,
 } from "../slice/dashboardSlice";
 import getLastNumbersOfDayProfit from "../utils/getLastNumbersOfDayProfit";
 import DashboardGrid from "../layout/DashboardGrid";
@@ -22,23 +20,33 @@ import BarChartRecentPerformance from "../components/BarChartRecentPerformance";
 import AverageWinVsLossBarChart from "../components/AverageWinVsLossBarChart";
 import WelcomeBar from "../components/WelcomeBar";
 import RecentTradesOpenTrades from "../components/RecentTradesOpenTrades";
+import Modal from "../components/common/Modal";
+import SessionExpired from "../components/SessionExpired";
 
 const DashBoard = () => {
     const dashboardData = useSelector(selectDashboardData);
     const selectedPeriod = useSelector(selectSelectedPeriod);
     const isLoading = useSelector(selectDashboardIsLoading);
     const hasError = useSelector(selectDashboardHasError);
+    const errorMessage = useSelector(selectErrorMessage);
     const dispatch = useDispatch();
-
 
     useEffect(() => {
         dispatch(fetchDashboard(selectedPeriod));
     }, [selectedPeriod, dispatch]);
 
-    if (isLoading || !dashboardData) {
+    if (isLoading) {
         return <div>Loading...</div>;
-    } else if (hasError) {
+    } else if (hasError && errorMessage === "Server error") {
         return <div>Something went wrong...</div>;
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        );
+    } else if (!dashboardData) {
+        return <div>No data</div>;
     }
 
     return (
@@ -132,7 +140,14 @@ const DashBoard = () => {
                                 )}
                             />
                         ),
-                        dataTable: <RecentTradesOpenTrades recentTradeData={dashboardData.completeTradesInfo} openTradeData = {[]} />,
+                        dataTable: (
+                            <RecentTradesOpenTrades
+                                recentTradeData={
+                                    dashboardData.completeTradesInfo
+                                }
+                                openTradeData={[]}
+                            />
+                        ),
                     }}
                 />
             </div>

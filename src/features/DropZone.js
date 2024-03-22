@@ -5,11 +5,14 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import clsx from "clsx";
 import BlueButton from "../components/common/BlueButton";
+import Modal from "../components/common/Modal";
+import SessionExpired from "../components/SessionExpired";
 const DropZone = () => {
     const [files, setFiles] =useState([]);
     const [fileExits, setFileExits] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [unauthorized, setUnauthorized] = useState(false);
     const [success, setSuccess] = useState(false)
 
     const handleUpload = async () => {
@@ -23,7 +26,10 @@ const DropZone = () => {
                 credentials: 'include',
                 body: formData,
             });
-
+            if (upload.status === 401) {
+                setUnauthorized(true);
+                setIsLoading(false);
+            }
             const response = await upload.json();
             if (response.status === "success") {
                 setHasError(false);
@@ -123,6 +129,10 @@ const DropZone = () => {
                 {success && <p className="flex items-center text-green-500 px-8 py-2 gap-1" ><DoneAllIcon /> Successfully uploaded</p>}
                 {/* error state */}
                 {hasError && <p className="flex items-center text-red-500 px-8 py-2 gap-1"><PriorityHighRoundedIcon /> There was an error with uploading</p>}
+                {/* unauthorized state */}
+                <Modal open={unauthorized}>
+                    <SessionExpired />
+                </Modal>
 
             </div>
         </div>

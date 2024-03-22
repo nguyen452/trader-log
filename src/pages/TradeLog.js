@@ -9,15 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Table from "../components/Table";
 import ButtonWithDropDownMenu from "../components/common/ButtonWithDropDownMenu";
 import {
-    setSelectedTrade,
-    setIsTradeLogOpen,
-    searchTrades,
-    setStartDate,
-    setEndDate,
     setPage,
     setShow,
-    selectSelectedTrade,
-    selectIsTradeLogOpen,
     selectSearchTrades,
     selectStartDate,
     selectEndDate,
@@ -27,6 +20,7 @@ import {
     selectTradesIsLoading,
     selectTradesHasError,
     fetchTrades,
+    selectErrorMessage,
 } from "../slice/tradeLogSlice";
 import paginateData from "../utils/paginateData";
 import searchTrade from "../utils/searchTrade";
@@ -34,6 +28,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Pagination from "../components/common/Pagination";
 import getFilteredDataByDateRange from "../utils/getFilteredDataByDateRange";
+import Modal from "../components/common/Modal";
+import SessionExpired from "../components/SessionExpired";
 
 const TradeLog = () => {
     const dispatch = useDispatch();
@@ -42,6 +38,7 @@ const TradeLog = () => {
     const searchTerm = useSelector(selectSearchTrades);
     const startDate = useSelector(selectStartDate);
     const endDate = useSelector(selectEndDate);
+    const errorMessage = useSelector(selectErrorMessage);
 
     useEffect(() => {
         dispatch(fetchTrades());
@@ -51,10 +48,18 @@ const TradeLog = () => {
     const hasError = useSelector(selectTradesHasError);
     const data = useSelector(selectTrades);
 
-    if (isLoading || !data) {
+    if (isLoading) {
         return <div>Loading...</div>;
-    } else if (hasError) {
-        return <div>Error...</div>;
+    } else if (hasError && errorMessage === "Server error") {
+        return <div>There was an Error </div>;
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        )
+    } else if (!data) {
+        return <div>No data available</div>;
     }
 
     let tradeLogData = [...data.completeTradesInfo];

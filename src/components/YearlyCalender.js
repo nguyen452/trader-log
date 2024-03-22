@@ -73,11 +73,10 @@ const YearlyCalender = ({ displayProfitableDays, year }) => {
                             </h1>
                             {/* open month button*/}
                             <button
-                                className="bg-traderBlue text-white flex items-center justify-center gap-1 h-8 w-40 rounded-xl px-4"
+                                className="bg-traderBlue text-white flex items-center justify-center gap-1 h-8 rounded-xl px-4"
                                 onClick={() => handleViewMonth(year, month)}
                             >
-                                <PageviewIcon />
-                                <p>View Month</p>
+                                <PageviewIcon fontSize="large" />
                             </button>
                         </div>
 

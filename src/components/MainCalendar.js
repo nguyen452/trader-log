@@ -11,12 +11,15 @@ import {
     selectMonthProfit,
     setDate as setCalendarSelectedDate,
     getTradeDataByDate,
-    openDateModal
+    openDateModal,
+    selectErrorMessage,
 } from "../slice/calendarModalSlice";
 import isDayProfitable from "../utils/isDayProfitable";
 import clsx from "clsx";
 import getProfitForDay from "../utils/getProfitForDay";
 import getNumberOfTradesPerDay from "../utils/getNumberTradePerDay";
+import Modal from "./common/Modal";
+import SessionExpired from "./SessionExpired";
 
 
 const MainCalendar = ({ year, month, displayProfitableDays }) => {
@@ -24,6 +27,7 @@ const MainCalendar = ({ year, month, displayProfitableDays }) => {
     const isLoading = useSelector(selectIsLoading);
     const hasError = useSelector(selectHasError);
     const monthProfit = useSelector(selectMonthProfit);
+    const errorMessage = useSelector(selectErrorMessage);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -74,9 +78,15 @@ const MainCalendar = ({ year, month, displayProfitableDays }) => {
 
     if (isLoading) {
         return <div>Loading...</div>;
-    } else if (hasError) {
+    } else if (hasError && errorMessage === "Server error") {
         return <div>Unable to fetch data</div>;
-    } else {
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        )
+    }else {
         return (
             <div className="bg-white rounded-xl container p-8 flex flex-col justify-center">
                 <div className="flex justify-between items-center py-2">

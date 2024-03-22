@@ -10,7 +10,10 @@ import {
     selectTradeDataLoading,
     selectTradeDataError,
     fetchTradeData,
+    selectErrorMessage,
 } from "../slice/tradesSlice";
+import Modal from "../components/common/Modal";
+import SessionExpired from "../components/SessionExpired";
 
 const Trade = () => {
     const { tradeId } = useParams();
@@ -20,26 +23,31 @@ const Trade = () => {
     const isLoading = useSelector(selectTradeDataLoading);
     const hasError = useSelector(selectTradeDataError);
     const tradingViewData = useSelector(selectTradingViewData);
+    const errorMessage = useSelector(selectErrorMessage);
 
     useEffect(() => {
-        console.log('useEffect')
+        console.log("useEffect");
         const fetchData = async () => {
             await dispatch(fetchTradeData(tradeId));
         };
         fetchData();
-    },[dispatch, tradeId]);
-
+    }, [dispatch, tradeId]);
 
     if (isLoading || !tradeData || tradingViewData.length === 0) {
         return <div>Loading...</div>;
-    } else if (hasError) {
+    } else if (hasError && errorMessage === "Server error") {
         return <div>Something went wrong...</div>;
+    } else if (hasError && errorMessage === "Unauthorized") {
+        return (
+            <Modal open={true}>
+                <SessionExpired />
+            </Modal>
+        );
     } else {
         const date = tradeData.trade.date_close;
         const symbol = tradeData.trade.symbol;
         const profitLoss = tradeData.trade.profit;
         const sharesTraded = tradeData.totalSharesTraded;
-        console.log(tradingViewData)
 
         return (
             <main className="container mx-auto w-full">
@@ -47,9 +55,7 @@ const Trade = () => {
                     <section className="flex justify-between items-center">
                         <div className="text-xl font-semibold flex gap-8 ">
                             <h1>{symbol}</h1>
-                            <h2 className="font-medium">
-                                {formatDate(date)}
-                            </h2>
+                            <h2 className="font-medium">{formatDate(date)}</h2>
                         </div>
                         <div className="flex gap-8 items-center text-xl">
                             <h3>P&L {profitLoss}</h3>
