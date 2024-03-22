@@ -162,7 +162,7 @@ const TradeLog = () => {
                 />
             </div>
             <div className=" bg-white p-8 mt-8 rounded-3xl shadow-md">
-                <Table data={tradeLogDataPaginated} />
+                <Table data={tradeLogDataPaginated} isRowClickable={true} />
                 <div className="flex justify-center">
                     <div className="w-full h-24 flex items-center space-x-4">
                         <h2>Trades per Page:</h2>
