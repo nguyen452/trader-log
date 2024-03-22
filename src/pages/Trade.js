@@ -4,101 +4,33 @@ import Table from "../components/Table";
 import formatDate from "../utils/formatDates";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTradeData } from "../slice/tradesSlice"
 import {
     selectTradeData,
+    selectTradingViewData,
     selectTradeDataLoading,
     selectTradeDataError,
+    fetchTradeData,
 } from "../slice/tradesSlice";
 
-const data = [
-    {
-        id: 1,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 2,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 3,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 4,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 5,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 6,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 7,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 8,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 9,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-    {
-        id: 10,
-        symbol: "AAPL",
-        date: "2021-01-01",
-        PnL: 100,
-        shares: 100,
-    },
-];
-
 const Trade = () => {
-    const { TradeId } = useParams();
+    const { tradeId } = useParams();
+
     const dispatch = useDispatch();
     const tradeData = useSelector(selectTradeData);
     const isLoading = useSelector(selectTradeDataLoading);
     const hasError = useSelector(selectTradeDataError);
+    const tradingViewData = useSelector(selectTradingViewData);
 
     useEffect(() => {
+        console.log('useEffect')
         const fetchData = async () => {
-            await dispatch(fetchTradeData({ TradeId }));
+            await dispatch(fetchTradeData(tradeId));
         };
         fetchData();
-    });
+    },[dispatch, tradeId]);
 
-    if (isLoading) {
+
+    if (isLoading || !tradeData || tradingViewData.length === 0) {
         return <div>Loading...</div>;
     } else if (hasError) {
         return <div>Something went wrong...</div>;
@@ -107,6 +39,8 @@ const Trade = () => {
         const symbol = tradeData.trade.symbol;
         const profitLoss = tradeData.trade.profit;
         const sharesTraded = tradeData.totalSharesTraded;
+        console.log(tradingViewData)
+
         return (
             <main className="container mx-auto w-full">
                 <div className="flex flex-col gap-4 p-4">
@@ -126,10 +60,10 @@ const Trade = () => {
                         <h2 className="font-medium text-xl mb-4 ">
                             Executions
                         </h2>
-                        <Table data={data} />
+                        <Table data={tradeData.tradeExecutions} />
                     </section>
                     <div className="w-full h-96 p-4 rounded-xl shadow-md bg-white">
-                        <TradingViewCandleStickChart />
+                        <TradingViewCandleStickChart data={tradingViewData} />
                     </div>
                 </div>
             </main>
