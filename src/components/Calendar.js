@@ -107,7 +107,7 @@ function Calendar({ displayProfitableDays, action, switchMonthButton }) {
             </div>
 
             {/* Calendar Days */}
-            <div className="grid grid-cols-7 border border-slate-100 rounded-xl font-light aspect-square">
+            <div className="grid grid-cols-7 border border-slate-100 rounded-xl font-light p-0.5">
                 {/* get days to to fully populate the calendar */}
 
                 {getDaystoPopulateCalendar(
@@ -122,7 +122,7 @@ function Calendar({ displayProfitableDays, action, switchMonthButton }) {
                     return (
                         <div
                             className={clsx(
-                                "w-full h-full flex flex-col justify-center hover:cursor-pointer aspect-square p-1 border-b-2 border-r-2 border-white ",
+                                "flex items-center justify-center hover:cursor-pointer aspect-square m-0.5 rounded-md",
                                 // background green if day is profitable
                                 {
                                     "bg-green-100 hover:bg-green-200":
@@ -167,7 +167,7 @@ function Calendar({ displayProfitableDays, action, switchMonthButton }) {
                         >
                             <p
                                 className={clsx({
-                                    "p-2 aspect-square flex items-center justify-center": true,
+                                    "p-2 aspect-square flex items-center justify-center w-3/4": true,
                                     // text will be blue if it is today
                                     "text-blue-500 font-semibold":
                                         date.year === todaysDate.year &&
