@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
 import {
-    filteredBySelectedDate,
     selectDashboardData,
 } from "../slice/dashboardSlice";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
