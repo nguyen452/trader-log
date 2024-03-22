@@ -16,6 +16,10 @@ export const getCalendarModalData = createAsyncThunk(
         if (response.ok) {
             const data = await response.json();
             tradeData = data;
+        } else if (response.status === 401) {
+            throw new Error("Unauthorized");
+        } else {
+            throw new Error("Server error");
         }
         return tradeData;
     }
@@ -45,6 +49,7 @@ const calendarModalSlice = createSlice({
     initialState: {
         isLoading: false,
         hasError: false,
+        errorMessage: "",
         tradeData: { profitsPerDay: {}, getNumberOfTradesPerDay: {} },
         monthProfit: 0,
         month: null,
@@ -127,9 +132,11 @@ const calendarModalSlice = createSlice({
                 }, 0);
                 state.monthProfit = roundingNumbers(monthlyProfit, 2);
             })
-            .addCase(getCalendarModalData.rejected, (state) => {
+            .addCase(getCalendarModalData.rejected, (state, action) => {
                 state.isLoading = false;
+                state.errorMessage = action.error.message;
                 state.hasError = true;
+
             })
             // get trade Data by date
             .addCase(getTradeDataByDate.pending, (state) => {
@@ -159,4 +166,5 @@ export const selectMonthProfit = (state) => state.calendarModal.monthProfit;
 export const selectDateSelected = (state) => state.calendarModal.dateSelected;
 export const selectTradeDataByDate = (state) => state.calendarModal.tradeDataForDateSelected;
 export const selectIsDateModalOpen = (state) => state.calendarModal.isDateModalOpen;
+export const selectErrorMessage = (state) => state.calendarModal.errorMessage;
 export default calendarModalSlice.reducer;
