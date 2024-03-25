@@ -22,7 +22,7 @@ const Table = ({ data, rowPerPage, isRowClickable }) => {
                     "border-zinc-100",
                     "bg-white",
                     "text-base",
-                    "font-light"
+                    "font-light",
 
                 )}
             >
