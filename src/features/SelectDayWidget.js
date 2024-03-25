@@ -24,7 +24,7 @@ const SelectDayWidget = () => {
     }
 
     return (
-        <div className="flex flex-col md:flex-row items-center bg-white w-full h-full md:gap-4 rounded-3xl shadow-md p-4">
+        <div className="flex flex-col md:flex-row items-center bg-white w-full md:gap-4 rounded-3xl shadow-md p-4">
             <Calendar
                 className="flex"
                 displayProfitableDays={true}
@@ -32,8 +32,9 @@ const SelectDayWidget = () => {
                     handleChangeDate(selectedDate);
                 }}
                 switchMonthButton={true}
+                style = {{width: "412px"}}
             />
-            <div className="w-full h-full">
+            <div className="w-full" style={{height: "448px"}}>
                 <h2 className="font-normal text-slate-800 text-xl p-8">
                     {selectedDate.toLocaleDateString("en-US", {
                         year: "numeric",
@@ -46,8 +47,8 @@ const SelectDayWidget = () => {
                         No trades on this day
                     </div>
                 ) : (
-                    <div>
-                        <Table data={dataBySelectedDay} />
+                    <div className="h-80 overflow-auto">
+                        <Table data={dataBySelectedDay}/>
                     </div>
                 )}
             </div>
