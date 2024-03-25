@@ -10,7 +10,7 @@ import {
 const COLORS = ['#1083EF','#F17471', 'FED766'];
 const WinRatePieChart = ({ data }) => {
     return (
-        <ResponsiveContainer width={200} height={96}>
+        <ResponsiveContainer width={150} height={96}>
             <PieChart>
                 <Pie
                     data={data}
