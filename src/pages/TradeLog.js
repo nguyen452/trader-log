@@ -117,6 +117,8 @@ const TradeLog = () => {
                     chart={
                         <ProfitMiniAreaChart
                             data={data.accumulatedProfitsPerDay}
+                            width={250}
+                            height={150}
                         />
                     }
                 />

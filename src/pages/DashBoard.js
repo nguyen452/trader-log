@@ -64,6 +64,8 @@ const DashBoard = () => {
                                         data={
                                             dashboardData.accumulatedProfitsPerDay
                                         }
+                                        width={220}
+                                        height={100}
                                     />
                                 }
                             />
@@ -101,12 +103,14 @@ const DashBoard = () => {
                                         ]}
                                     />
                                 }
+                                textBoxWidth={"w-1/2"}
+                                chartWidth={"w-1/2"}
                             />
                         ),
                         card4: (
                             <Cards
                                 title="Average Win vs Loss"
-                                content={`${dashboardData.averageReturn}`}
+                                content={`$ ${dashboardData.averageReturn}`}
                                 chart={
                                     <AverageWinVsLossBarChart
                                         data={[
@@ -120,6 +124,8 @@ const DashBoard = () => {
                                         ]}
                                     />
                                 }
+                                textBoxWidth={"w-40"}
+                                chartWidth={"w-36"}
                             />
                         ),
                         selectDayWidget: (
