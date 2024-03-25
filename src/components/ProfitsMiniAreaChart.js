@@ -16,8 +16,9 @@ const chartStyle = {
 };
 
 const ProfitMiniAreaChart = ({ data, yAxis, xAxis, cartesianGrid, width, height }) => {
+    console.log(width, height)
     return (
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width={width} height={height}>
             <AreaChart
                 data={data}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -39,7 +40,7 @@ const ProfitMiniAreaChart = ({ data, yAxis, xAxis, cartesianGrid, width, height 
                     stroke="url(#gradient)"
                     strokeWidth={2}
                     dot={false}
-                    fill="url(#gradient)"
+                    fill="#1083EF"
                 />
             </AreaChart>
         </ResponsiveContainer>

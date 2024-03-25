@@ -3,8 +3,6 @@ import {
     BarChart,
     Bar,
     ResponsiveContainer,
-    XAxis,
-    YAxis,
     Tooltip,
 } from "recharts";
 
