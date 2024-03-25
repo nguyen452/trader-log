@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSelectedDate, setSelectedDate } from "../slice/calendarSlice";
-import {
-    selectDashboardData,
-} from "../slice/dashboardSlice";
+import { selectDashboardData } from "../slice/dashboardSlice";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import clsx from "clsx";
@@ -155,7 +153,54 @@ function Calendar({ displayProfitableDays, action, switchMonthButton }) {
                                             )
                                         ) === "no data",
                                 },
-                                {}
+                                {
+                                    // selected date will pop up and bg will be slate-50
+                                    "scale-105 transition-transform duration-300 shadow-md font-medium bg-slate-50":
+                                        date.year ===
+                                            selectedDate.getFullYear() &&
+                                        date.month ===
+                                            selectedDate.getMonth() &&
+                                        date.day === selectedDate.getDate() &&
+                                        isDayProfitable(
+                                            new Date(
+                                                date.year,
+                                                date.month,
+                                                date.day
+                                            )
+                                        ) === "no data",
+                                },
+                                // selected date will pop up and bg will be green-200
+                                {
+                                    "scale-105 transition-transform duration-300 shadow-md font-medium bg-green-300":
+                                        date.year ===
+                                            selectedDate.getFullYear() &&
+                                        date.month ===
+                                            selectedDate.getMonth() &&
+                                        date.day === selectedDate.getDate() &&
+                                        isDayProfitable(
+                                            new Date(
+                                                date.year,
+                                                date.month,
+                                                date.day
+                                            )
+                                        ) === "profitable",
+                                },
+                                // selected date will pop up and bg will be red-200
+                                {
+                                    "scale-105 transition-transform duration-300 shadow-md font-medium bg-red-300":
+                                        date.year ===
+                                            selectedDate.getFullYear() &&
+                                        date.month ===
+                                            selectedDate.getMonth() &&
+                                        date.day === selectedDate.getDate() &&
+                                        isDayProfitable(
+                                            new Date(
+                                                date.year,
+                                                date.month,
+                                                date.day
+                                            )
+                                        ) === "not profitable",
+                                }
                             )}
                             key={index}
                             onClick={() => {
@@ -175,13 +220,6 @@ function Calendar({ displayProfitableDays, action, switchMonthButton }) {
                                     //  text will be gray if it is not the current month
                                     "text-gray-300":
                                         date.month !== currentDate.getMonth(),
-                                    // selected date will have white text and blue background when selected
-                                    "text-white bg-blue-500 rounded-full":
-                                        date.year ===
-                                            selectedDate.getFullYear() &&
-                                        date.month ===
-                                            selectedDate.getMonth() &&
-                                        date.day === selectedDate.getDate(),
                                 })}
                             >
                                 {date.day}
